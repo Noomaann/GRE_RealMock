@@ -1,0 +1,2532 @@
+[
+  {
+    "_id": "6a50a3af36390d119a9f165c",
+    "title": "Mock Test   # 3",
+    "questions": [
+      {
+        "type": "fill-blank",
+        "content": "<p>The document was signed \"Yours respectfully,\" but in its urgency and ______ statement of facts it seemed more like a curt set of orders.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": [
+              {
+                "content": "<p>prolix</p>"
+              },
+              {
+                "content": "<p>chaotic</p>"
+              },
+              {
+                "content": "<p>peremptory</p>"
+              },
+              {
+                "content": "<p>exhaustive</p>"
+              },
+              {
+                "content": "<p>tedious</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              0
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          }
+        ],
+        "section": "verbal-1",
+        "difficulty": 2,
+        "_id": "6a50a47736390d119a9f1661"
+      },
+      {
+        "type": "fill-blank",
+        "content": "<p>Gutiérrez is the only one who seems to be (i)______ the controversy sparked by his article: his appetite for scientific (ii)______ seems, if anything, to be increasing with age.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": [
+              {
+                "content": "<p>relishing</p>"
+              },
+              {
+                "content": "<p>quelling</p>"
+              },
+              {
+                "content": "<p>whitewashing</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              0
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          },
+          {
+            "options": [
+              {
+                "content": "<p>altercations</p>"
+              },
+              {
+                "content": "<p>conundrums</p>"
+              },
+              {
+                "content": "<p>breakthroughs</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              0
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          }
+        ],
+        "section": "verbal-1",
+        "difficulty": 3,
+        "_id": "6a50a4da36390d119a9f1665"
+      },
+      {
+        "type": "fill-blank",
+        "content": "<p>The artists sought to (i)_______ precisely the impulses that traditional or generally accepted thinking had (ii)_______ . By cultivating instinctive, irrational awarenesses—which might come from dreams or from accepting results derived by chance or from a receptivity to taboo—they hoped to (iii)_______ their audience's sense of everyday reality.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": [
+              {
+                "content": "<p>augment</p>"
+              },
+              {
+                "content": "<p>conceal</p>"
+              },
+              {
+                "content": "<p>affirm</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              0
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          },
+          {
+            "options": [
+              {
+                "content": "<p>marginalized</p>"
+              },
+              {
+                "content": "<p>assimilated</p>"
+              },
+              {
+                "content": "<p>propagated</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              0
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          },
+          {
+            "options": [
+              {
+                "content": "<p>reflect</p>"
+              },
+              {
+                "content": "<p>unsettle</p>"
+              },
+              {
+                "content": "<p>undergird</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              1
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          }
+        ],
+        "section": "verbal-1",
+        "difficulty": 4,
+        "_id": "6a50a54336390d119a9f166a"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     Data on modern and historic peasant communities suggest that individuals and communities specialize in ceramic production for trade primarily to offset subsistence shortfalls arising from inadequate or insufficient agricultural land. Harry investigated whether this <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">correlation</mark> of ceramic specialization with agricultural marginality occurred among prehistoric inhabitants of the American Southwest. At Arizona's West Branch site, occupied A.D. 900–1100, abundant pottery manufacturing materials suggest villagewide ceramic production in excess of that needed for household purposes. Harry points out, however, that if West Branch residents exchanged pots for food, one would expect the villages with which they traded to have produced more consistent food surpluses than West Branch did. In fact, the West Branch village appears to have been located in an area with better agricultural conditions than those of the pottery-consuming settlements.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 4 and 5 are based on this passage.</p>",
+        "optiontopcontent": "<p>Which of the following, if discovered to be true, would most tend to suggest that the \"correlation\" mentioned in the passage held true for the people of the West Branch site?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>The ceramic technology used at the West Branch site was superior to that used at other villages in the region.</p>",
+            "_id": "6a50a5c736390d119a9f1671"
+          },
+          {
+            "content": "<p>West Branch residents traded with communities located in a region that was agriculturally less productive than West Branch.</p>",
+            "_id": "6a50a5c736390d119a9f1672"
+          },
+          {
+            "content": "<p>Soil at the West Branch site was deficient in nutrients essential to agriculture during the time the site was inhabited.</p>",
+            "_id": "6a50a5c736390d119a9f1673"
+          },
+          {
+            "content": "<p>Rainfall at the West Branch site was generally favorable for agriculture between A.D. 900 and 1100.</p>",
+            "_id": "6a50a5c736390d119a9f1674"
+          },
+          {
+            "content": "<p>Inhabitants of the West Branch site regularly traveled to neighboring villages for trading purposes.</p>",
+            "_id": "6a50a5c736390d119a9f1675"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 4,
+        "_id": "6a50a5c736390d119a9f1670"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     Data on modern and historic peasant communities suggest that individuals and communities specialize in ceramic production for trade primarily to offset subsistence shortfalls arising from inadequate or insufficient agricultural land. Harry investigated whether this correlation of ceramic specialization with agricultural <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">marginality</mark> occurred among prehistoric inhabitants of the American Southwest. At Arizona's West Branch site, occupied A.D. 900–1100, abundant pottery manufacturing materials suggest villagewide ceramic production in excess of that needed for household purposes. Harry points out, however, that if West Branch residents exchanged pots for food, one would expect the villages with which they traded to have produced more consistent food surpluses than West Branch did. In fact, the West Branch village appears to have been located in an area with better agricultural conditions than those of the pottery-consuming settlements.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 4 and 5 are based on this passage.</p>",
+        "optiontopcontent": "<p>Replacement of the word \"marginality\" with which of the following words results in the least change in meaning for the passage?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>peculiarity</p>",
+            "_id": "6a50a6cb36390d119a9f1684"
+          },
+          {
+            "content": "<p>insignificance</p>",
+            "_id": "6a50a6cb36390d119a9f1685"
+          },
+          {
+            "content": "<p>nonconformity</p>",
+            "_id": "6a50a6cb36390d119a9f1686"
+          },
+          {
+            "content": "<p>deficiency</p>",
+            "_id": "6a50a6cb36390d119a9f1687"
+          },
+          {
+            "content": "<p>futility</p>",
+            "_id": "6a50a6cb36390d119a9f1688"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 3,
+        "_id": "6a50a6cb36390d119a9f1683"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>The light sensitivity of the juvenile stick insect is ______ nocturnal behavior, forcing it to be diurnal, but sensitivity increases with each molt and enables the adult insect to lead a safer nocturnal lifestyle.</p>",
+        "bottomcontent": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>deficient for</p>",
+            "_id": "6a50a71836390d119a9f169b"
+          },
+          {
+            "content": "<p>superfluous for</p>",
+            "_id": "6a50a71836390d119a9f169c"
+          },
+          {
+            "content": "<p>inadequate for</p>",
+            "_id": "6a50a71836390d119a9f169d"
+          },
+          {
+            "content": "<p>constrained by</p>",
+            "_id": "6a50a71836390d119a9f169e"
+          },
+          {
+            "content": "<p>enhanced by</p>",
+            "_id": "6a50a71836390d119a9f169f"
+          },
+          {
+            "content": "<p>indispensable for</p>",
+            "_id": "6a50a71836390d119a9f16a0"
+          }
+        ],
+        "correctAnswerIndices": [
+          0,
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 3,
+        "_id": "6a50a71836390d119a9f169a"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>The composer's ________ particular genres was clear: she returned again and again to the same styles of music throughout her career.</p>",
+        "bottomcontent": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>creativity in</p>",
+            "_id": "6a50cd5036390d119a9f673d"
+          },
+          {
+            "content": "<p>predilection for</p>",
+            "_id": "6a50cd5036390d119a9f673e"
+          },
+          {
+            "content": "<p>mastery of</p>",
+            "_id": "6a50cd5036390d119a9f673f"
+          },
+          {
+            "content": "<p>partiality to</p>",
+            "_id": "6a50cd5036390d119a9f6740"
+          },
+          {
+            "content": "<p>familiarity with</p>",
+            "_id": "6a50cd5036390d119a9f6741"
+          },
+          {
+            "content": "<p>inventiveness in</p>",
+            "_id": "6a50cd5036390d119a9f6742"
+          }
+        ],
+        "correctAnswerIndices": [
+          1,
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 2,
+        "_id": "6a50cd5036390d119a9f673c"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>In general, the more that Victorian society felt it had lost contact with the rural, the more the rural became an object of ______ for metropolitan commentators, who represented it as a moral antidote to urban life.</p>",
+        "bottomcontent": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>fascination</p>",
+            "_id": "6a50a7c136390d119a9f16e0"
+          },
+          {
+            "content": "<p>envy</p>",
+            "_id": "6a50a7c136390d119a9f16e1"
+          },
+          {
+            "content": "<p>mockery</p>",
+            "_id": "6a50a7c136390d119a9f16e2"
+          },
+          {
+            "content": "<p>satire</p>",
+            "_id": "6a50a7c136390d119a9f16e3"
+          },
+          {
+            "content": "<p>idealization</p>",
+            "_id": "6a50a7c136390d119a9f16e4"
+          },
+          {
+            "content": "<p>romanticization</p>",
+            "_id": "6a50a7c136390d119a9f16e5"
+          }
+        ],
+        "correctAnswerIndices": [
+          4,
+          5
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 3,
+        "_id": "6a50a7c136390d119a9f16df"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>Because the country' s media are now operating freely and the electoral authorities have been changed, there should be no repeat of the ______ of last year' s election, when media coverage and vote counts were manipulated by the intelligence agency.</p>",
+        "bottomcontent": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>chicanery</p>",
+            "_id": "6a50a80936390d119a9f170d"
+          },
+          {
+            "content": "<p>blundering</p>",
+            "_id": "6a50a80936390d119a9f170e"
+          },
+          {
+            "content": "<p>ingenuousness</p>",
+            "_id": "6a50a80936390d119a9f170f"
+          },
+          {
+            "content": "<p>naïveté</p>",
+            "_id": "6a50a80936390d119a9f1710"
+          },
+          {
+            "content": "<p>vindictiveness</p>",
+            "_id": "6a50a80936390d119a9f1711"
+          },
+          {
+            "content": "<p>subterfuge</p>",
+            "_id": "6a50a80936390d119a9f1712"
+          }
+        ],
+        "correctAnswerIndices": [
+          0,
+          5
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 4,
+        "_id": "6a50a80936390d119a9f170c"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>The following passage comes from a study of gull bill markings.</p><p></p><p>     Some species of gulls have uniformly colored bills, but many (62 percent in our sample) have beaks with differently colored tips, stripes, or spots that act as a focus for the pecking of newly hatched chicks as they beg for food. In an attempt to understand why, we determined whether adult gulls of those species with newly hatched chicks that are small in relation to the size of the adult are more likely to have such patterned beaks. This work is based on Hailman' s (1967) suggestion that gulls with greater bill depths (large species) tend to have only a restricted area of red on the bill (i.e., a red tip or spot), whereas smaller-billed species have uniform bills. We suggest that the most plausible reason for any size-related difference is that concentrating a small chick' s pecking on a particular part of the bill is more effective than is unfocused pecking in stimulating the adult to regurgitate food. As well as encouraging the chick to peck, the tip of the bill, or the gonys (where stripes and spots are located), might be more sensitive than are other parts of the beak to the feeble pecking of a small chick, or a small chick might more effectively occupy the parent' s visual field when pecking there.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 10 to 12 are based on this passage.</p>",
+        "optiontopcontent": "<p>The primary purpose of the passage is to</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>categorize the different kinds of markings that can appear on gull bills</p>",
+            "_id": "6a50a8a736390d119a9f1741"
+          },
+          {
+            "content": "<p>present evidence that casts doubt on a theory regarding gull bill markings</p>",
+            "_id": "6a50a8a736390d119a9f1742"
+          },
+          {
+            "content": "<p>speculate about the function of gull bill markings</p>",
+            "_id": "6a50a8a736390d119a9f1743"
+          },
+          {
+            "content": "<p>show that the effectiveness of a gull chick' s begging is determined by its size</p>",
+            "_id": "6a50a8a736390d119a9f1744"
+          },
+          {
+            "content": "<p>examine the relationship between chick size and adult size in different gull species</p>",
+            "_id": "6a50a8a736390d119a9f1745"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 3,
+        "_id": "6a50aa7f36390d119a9f1848"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>The following passage comes from a study of gull bill markings.</p><p></p><p>     Some species of gulls have uniformly colored bills, but many (62 percent in our sample) have beaks with differently colored tips, stripes, or spots that act as a focus for the pecking of newly hatched chicks as they beg for food. In an attempt to understand why, we determined whether adult gulls of those species with newly hatched chicks that are small in relation to the size of the adult are more likely to have such patterned beaks. This work is based on Hailman' s (1967) suggestion that gulls with greater bill depths (large species) tend to have only a restricted area of red on the bill (i.e., a red tip or spot), whereas smaller-billed species have uniform bills. We suggest that the most plausible reason for any size-related difference is that concentrating a small chick' s pecking on a particular part of the bill is more effective than is unfocused pecking in stimulating the adult to regurgitate food. As well as encouraging the chick to peck, the tip of the bill, or the gonys (where stripes and spots are located), might be more sensitive than are other parts of the beak to the feeble pecking of a small chick, or a small chick might more effectively occupy <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">the parent' s visual field</mark> when pecking there.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 10 to 12 are based on this passage.</p>",
+        "optiontopcontent": "<p>In the context of the passage, the reference to \"the parent' s visual field\" serves primarily to</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>propose a reason that red is found on gull bills more commonly than are other colors</p>",
+            "_id": "6a50a99836390d119a9f177a"
+          },
+          {
+            "content": "<p>describe the second of two mutually exclusive explanations for the coloration of gull bills</p>",
+            "_id": "6a50a99836390d119a9f177b"
+          },
+          {
+            "content": "<p>explain why it might be advantageous for gull bills to be marked in a particular way</p>",
+            "_id": "6a50a99836390d119a9f177c"
+          },
+          {
+            "content": "<p>explain why gull parents may give preference to certain chicks when feeding them</p>",
+            "_id": "6a50a99836390d119a9f177d"
+          },
+          {
+            "content": "<p>explain how a chick' s size may contribute to its effectiveness at begging for food</p>",
+            "_id": "6a50a99836390d119a9f177e"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 2,
+        "_id": "6a50aa6536390d119a9f17ff"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>The following passage comes from a study of gull bill markings.</p><p></p><p>      Some species of gulls have uniformly colored bills, but many (62 percent in our sample) have beaks with differently colored tips, stripes, or spots that act as a focus for the pecking of newly hatched chicks as they beg for food. In an attempt to understand why, we determined whether adult gulls of those species with newly hatched chicks that are small in relation to the size of the adult are more likely to have such patterned beaks. This work is based on Hailman' s (1967) suggestion that gulls with greater bill depths (large species) tend to have only a restricted area of red on the bill (i.e., a red tip or spot), whereas smaller-billed species have uniform bills. We suggest that the most plausible reason for any size-related difference is that concentrating a small chick' s pecking on a particular part of the bill is more effective than is unfocused pecking in stimulating the adult to regurgitate food. As well as encouraging the chick to peck, the tip of the bill, or the gonys (where stripes and spots are located), might be more sensitive than are other parts of the beak to the feeble pecking of a small chick, or a small chick might more effectively occupy the parent' s visual field when pecking there.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 10 to 12 are based on this passage.</p>",
+        "optiontopcontent": "<p>The passage suggests which of the following about unfocused chick pecking?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>It is more effective in gull species in which chick size is large relative to parent size.</p>",
+            "_id": "6a50aa3b36390d119a9f17b9"
+          },
+          {
+            "content": "<p>It is more effective in gull species with patterned bills than in species with uniform bills.</p>",
+            "_id": "6a50aa3b36390d119a9f17ba"
+          },
+          {
+            "content": "<p>It is more likely to occur in older chicks than in newly hatched chicks.</p>",
+            "_id": "6a50aa3b36390d119a9f17bb"
+          },
+          {
+            "content": "<p>It is more likely to occur in species with greater bill depths.</p>",
+            "_id": "6a50aa3b36390d119a9f17bc"
+          },
+          {
+            "content": "<p>It is more likely to occur when the chick is within the parent' s visual field.</p>",
+            "_id": "6a50aa3b36390d119a9f17bd"
+          }
+        ],
+        "correctAnswerIndices": [
+          0
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-1",
+        "difficulty": 4,
+        "_id": "6a50aa3b36390d119a9f17b8"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "<p style=\"text-align: center\">$$4^{x-1} &gt; 500$$</p><p style=\"text-align: center\"></p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a50ab2b36390d119a9f19ea"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a50ab2b36390d119a9f19eb"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a50ab2b36390d119a9f19ec"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a50ab2b36390d119a9f19ed"
+          }
+        ],
+        "correctAnswerIndices": [
+          0
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p><span>$x$</span></p>",
+            "quantityA": "<p><span>$x$</span></p>",
+            "quantityB": "<p><span>$5$</span></p>",
+            "optioncontent2": "<p><span>$5$</span></p>"
+          }
+        ],
+        "section": "quant-1",
+        "difficulty": 2,
+        "_id": "6a50ab2b36390d119a9f19e9"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "<img src=\"https://api.grequantschool.com//uploads/image-1784529650654-358421117.png\" style=\"width: 892px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\"><p style=\"text-align: center\"></p><p style=\"text-align: center\">$$AC = DF$$</p><p style=\"text-align: center\">$$AB = 2DE$$</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a5dc73e36390d119aab57a5"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a5dc73e36390d119aab57a6"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a5dc73e36390d119aab57a7"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a5dc73e36390d119aab57a8"
+          }
+        ],
+        "correctAnswerIndices": [
+          1
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p><span>$BC$</span></p>",
+            "quantityA": "<p><span>$BC$</span></p>",
+            "quantityB": "<p><span>$2EF$</span></p>",
+            "optioncontent2": "<p><span>$2EF$</span></p>"
+          }
+        ],
+        "section": "quant-1",
+        "difficulty": 3,
+        "_id": "6a5dc73e36390d119aab57a4"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "<p style=\"text-align: center\"><span>$x$</span> and <span>$y$</span> are integers.</p><p style=\"text-align: center\"></p><p style=\"text-align: center\">$$4 \\le x \\le 13$$</p><p style=\"text-align: center\">$$4 \\le y \\le 13$$</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a50abdb36390d119a9f1a81"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a50abdb36390d119a9f1a82"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a50abdb36390d119a9f1a83"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a50abdb36390d119a9f1a84"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p>The least possible value of <span>$\\frac{3x - 4}{y + 7}$</span></p>",
+            "quantityA": "<p>The least possible value of <span>$\\frac{3x - 4}{y + 7}$</span></p>",
+            "quantityB": "<p><span>$\\frac{2}{5}$</span></p>",
+            "optioncontent2": "<p><span>$\\frac{2}{5}$</span></p>"
+          }
+        ],
+        "section": "quant-1",
+        "difficulty": 3,
+        "_id": "6a50abdb36390d119a9f1a80"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "<p style=\"text-align: left\">During a clothing sale Louise purchased a blouse at 70 percent of its original price and a skirt at 80 percent of its original price.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a5dc5b236390d119aab493b"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a5dc5b236390d119aab493c"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a5dc5b236390d119aab493d"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a5dc5b236390d119aab493e"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p style=\"text-align: left\">The total price of the two purchases as a percent of the total of the original prices</p>",
+            "quantityA": "<p style=\"text-align: left\">The total price of the two purchases as a percent of the total of the original prices</p>",
+            "quantityB": "<p>75%</p>",
+            "optioncontent2": "<p>75%</p>"
+          }
+        ],
+        "section": "quant-1",
+        "difficulty": 2,
+        "_id": "6a5dc5b236390d119aab493a"
+      },
+      {
+        "type": "frequency",
+        "content": "<p>A certain elevator can carry no more than 400 pounds. If Jack weighs 165 pounds, what is the greatest possible number of 30-pound weights that the elevator could carry in addition to Jack?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "textorsymbol": false,
+        "textsymbol": "",
+        "textalign": false,
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": {
+          "numerator": 7,
+          "denominator": 0,
+          "_id": "6a50ac4d36390d119a9f1b2c"
+        },
+        "blanks": null,
+        "section": "quant-1",
+        "difficulty": 2,
+        "_id": "6a50ac4d36390d119a9f1b2b"
+      },
+      {
+        "type": "data-interpretation",
+        "content": "<p></p><img src=\"https://api.grequantschool.com//uploads/image-1784530834517-187981124.png\" style=\"width: 847px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\">",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 6 to 8 are based on the following data.</p>",
+        "optiontopcontent": "<p>The range of the average numbers of cups of coffee consumed daily per person was greatest for which of the following time periods?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "<p>1968–1973</p>",
+            "_id": "6a50acd436390d119a9f1b82"
+          },
+          {
+            "content": "<p>1973–1978</p>",
+            "_id": "6a50acd436390d119a9f1b83"
+          },
+          {
+            "content": "<p>1978–1983</p>",
+            "_id": "6a50acd436390d119a9f1b84"
+          },
+          {
+            "content": "<p>1983–1988</p>",
+            "_id": "6a50acd436390d119a9f1b85"
+          },
+          {
+            "content": "<p>1988–1993</p>",
+            "_id": "6a50acd436390d119a9f1b86"
+          }
+        ],
+        "correctAnswerIndices": [
+          1
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "diLayout": "up-down",
+        "diSubType": "mcq-1ans-row",
+        "diPrefix": null,
+        "diSuffix": null,
+        "section": "quant-1",
+        "difficulty": 3,
+        "_id": "6a5dc7a736390d119aab5aec"
+      },
+      {
+        "type": "data-interpretation",
+        "content": "<p></p><img src=\"https://api.grequantschool.com//uploads/image-1784530041727-985462905.png\" style=\"width: 834px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\">",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 6 to 8 are based on the following data.</p>",
+        "optiontopcontent": "<p>The percent increase in the average number of cups of coffee consumed daily per person from 1975 to 1980 is closest to which of the following?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "<p>0.25%</p>",
+            "_id": "6a50ad3d36390d119a9f1be2"
+          },
+          {
+            "content": "<p>2%</p>",
+            "_id": "6a50ad3d36390d119a9f1be3"
+          },
+          {
+            "content": "<p>20%</p>",
+            "_id": "6a50ad3d36390d119a9f1be4"
+          },
+          {
+            "content": "<p>35%</p>",
+            "_id": "6a50ad3d36390d119a9f1be5"
+          },
+          {
+            "content": "<p>45%</p>",
+            "_id": "6a50ad3d36390d119a9f1be6"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "diLayout": "up-down",
+        "diSubType": "mcq-1ans-row",
+        "diPrefix": null,
+        "diSuffix": null,
+        "section": "quant-1",
+        "difficulty": 3,
+        "_id": "6a5dc4ff36390d119aab46f4"
+      },
+      {
+        "type": "data-interpretation",
+        "content": "<p></p><img src=\"https://api.grequantschool.com//uploads/image-1784530189300-200071364.png\" style=\"width: 834px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\">",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 6 to 8 are based on the following data.</p>",
+        "optiontopcontent": "<p>Suppose that the yearly decreases from 1968 through 1975 in the average number of cups of coffee consumed daily per person had been a constant decrease instead of what is shown, but that the averages for 1968 and 1975 had remained as shown. Which of the following would have been closest to the constant yearly decrease, in cups of coffee?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "<p>0.7</p>",
+            "_id": "6a50adbe36390d119a9f1c48"
+          },
+          {
+            "content": "<p>0.6</p>",
+            "_id": "6a50adbe36390d119a9f1c49"
+          },
+          {
+            "content": "<p>0.5</p>",
+            "_id": "6a50adbe36390d119a9f1c4a"
+          },
+          {
+            "content": "<p>0.2</p>",
+            "_id": "6a50adbe36390d119a9f1c4b"
+          },
+          {
+            "content": "<p>0.1</p>",
+            "_id": "6a50adbe36390d119a9f1c4c"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "diLayout": "up-down",
+        "diSubType": "mcq-1ans-row",
+        "diPrefix": null,
+        "diSuffix": null,
+        "section": "quant-1",
+        "difficulty": 3,
+        "_id": "6a5dc52536390d119aab4812"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>A rectangular shower floor with dimensions $3\\frac{1}{3}$ feet by $4\\frac{2}{3}$ feet is to be covered with square tiles. Each tile measures $x$ inches on a side and there is to be no space between the tiles. What is the greatest possible value of $x$ for which no tile needs to be cut? (<u>Note</u>: 1 foot = 12 inches)</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>4</p>",
+            "_id": "6a50ae3f36390d119a9f1cb4"
+          },
+          {
+            "content": "<p>5</p>",
+            "_id": "6a50ae3f36390d119a9f1cb5"
+          },
+          {
+            "content": "<p>7</p>",
+            "_id": "6a50ae3f36390d119a9f1cb6"
+          },
+          {
+            "content": "<p>8</p>",
+            "_id": "6a50ae3f36390d119a9f1cb7"
+          },
+          {
+            "content": "<p>10</p>",
+            "_id": "6a50ae3f36390d119a9f1cb8"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-1",
+        "difficulty": 4,
+        "_id": "6a50c40736390d119a9f472e"
+      },
+      {
+        "type": "mcq",
+        "content": "<p style=\"text-align: center\">What is the product of the <span>$x$</span>-intercept and the <span>$y$</span>-intercept of the graph of <span>$5x + 2y = 20$</span> in the <span>$xy$</span>-plane?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>4</p>",
+            "_id": "6a50ae8c36390d119a9f1d26"
+          },
+          {
+            "content": "<p>10</p>",
+            "_id": "6a50ae8c36390d119a9f1d27"
+          },
+          {
+            "content": "<p>15</p>",
+            "_id": "6a50ae8c36390d119a9f1d28"
+          },
+          {
+            "content": "<p>20</p>",
+            "_id": "6a50ae8c36390d119a9f1d29"
+          },
+          {
+            "content": "<p>40</p>",
+            "_id": "6a50ae8c36390d119a9f1d2a"
+          }
+        ],
+        "correctAnswerIndices": [
+          4
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-1",
+        "difficulty": 3,
+        "_id": "6a50ae8c36390d119a9f1d25"
+      },
+      {
+        "type": "mcq",
+        "content": "<p style=\"text-align: center\">When the integer <span>$n$</span> is divided by 33, the remainder is 24. Which of the following must be a divisor of <span>$n$</span>?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>11</p>",
+            "_id": "6a50aec636390d119a9f1d9e"
+          },
+          {
+            "content": "<p>9</p>",
+            "_id": "6a50aec636390d119a9f1d9f"
+          },
+          {
+            "content": "<p>7</p>",
+            "_id": "6a50aec636390d119a9f1da0"
+          },
+          {
+            "content": "<p>4</p>",
+            "_id": "6a50aec636390d119a9f1da1"
+          },
+          {
+            "content": "<p>3</p>",
+            "_id": "6a50aec636390d119a9f1da2"
+          }
+        ],
+        "correctAnswerIndices": [
+          4
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-1",
+        "difficulty": 3,
+        "_id": "6a50aec636390d119a9f1d9d"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>If the length of one of the diagonals of quadrilateral <span>$Q$</span> is 10, which of the following values could be the perimeter of <span>$Q$</span>?</p><p></p><p>Indicate <u>all</u> such values.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>15</p>",
+            "_id": "6a50af1436390d119a9f1e1c"
+          },
+          {
+            "content": "<p>18</p>",
+            "_id": "6a50af1436390d119a9f1e1d"
+          },
+          {
+            "content": "<p>21</p>",
+            "_id": "6a50af1436390d119a9f1e1e"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-1",
+        "difficulty": 3,
+        "_id": "6a50af1436390d119a9f1e1b"
+      },
+      {
+        "type": "fill-blank",
+        "content": "<p>On its surface, László Krasznahorkai' s novel appears allegorical, but his works tend to construct allegories only to ______ them.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": [
+              {
+                "content": "<p>raze</p>"
+              },
+              {
+                "content": "<p>elaborate</p>"
+              },
+              {
+                "content": "<p>elongate</p>"
+              },
+              {
+                "content": "<p>crystallize</p>"
+              },
+              {
+                "content": "<p>exploit</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              0
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          }
+        ],
+        "section": "verbal-2",
+        "difficulty": 3,
+        "_id": "6a50af6c36390d119a9f1e9b"
+      },
+      {
+        "type": "fill-blank",
+        "content": "<p>Studies of hermaphroditic plants may exhibit sampling bias against self-fertilizing and cross-fertilizing species, thus inflating the frequency of species using a mixed mating system (both self-fertilizing and cross-fertilizing); nevertheless the number of mixed-system species is not ______.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": [
+              {
+                "content": "<p>self-evident</p>"
+              },
+              {
+                "content": "<p>static</p>"
+              },
+              {
+                "content": "<p>trivial</p>"
+              },
+              {
+                "content": "<p>relevant</p>"
+              },
+              {
+                "content": "<p>calculable</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              2
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          }
+        ],
+        "section": "verbal-2",
+        "difficulty": 4,
+        "_id": "6a50b02336390d119a9f1f19"
+      },
+      {
+        "type": "fill-blank",
+        "content": "<p>While it would be hard to categorize her as a (i)______ liberal, the governor appears to have ceded some of her carefully cultivated reputation as (ii)______ and is now more in line with the liberal wing of her party.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": [
+              {
+                "content": "<p>disingenuous</p>"
+              },
+              {
+                "content": "<p>provisional</p>"
+              },
+              {
+                "content": "<p>doctrinaire</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              2
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          },
+          {
+            "options": [
+              {
+                "content": "<p>an independent</p>"
+              },
+              {
+                "content": "<p>a sycophant</p>"
+              },
+              {
+                "content": "<p>a neophyte</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              0
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          }
+        ],
+        "section": "verbal-2",
+        "difficulty": 3,
+        "_id": "6a50b0ad36390d119a9f1f98"
+      },
+      {
+        "type": "fill-blank",
+        "content": "<p>Like many composers of electronic music, this composer is a pianist by training, and one might be tempted to hypothesize that this (i)______ is due to the fact that early electronic instruments, such as the synthesizer, were keyboard controlled. (ii)______ , the fact that, historically, most composers in any genre began as pianists (iii)______ that hypothesis.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": [
+              {
+                "content": "<p>oddity</p>"
+              },
+              {
+                "content": "<p>correlation</p>"
+              },
+              {
+                "content": "<p>presumption</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              1
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          },
+          {
+            "options": [
+              {
+                "content": "<p>Furthermore</p>"
+              },
+              {
+                "content": "<p>However</p>"
+              },
+              {
+                "content": "<p>Specifically</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              1
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          },
+          {
+            "options": [
+              {
+                "content": "<p>clarifies</p>"
+              },
+              {
+                "content": "<p>challenges</p>"
+              },
+              {
+                "content": "<p>extends</p>"
+              }
+            ],
+            "correctAnswerIndex": [
+              1
+            ],
+            "optioncontent": "",
+            "quantityA": null,
+            "quantityB": null,
+            "optioncontent2": null
+          }
+        ],
+        "section": "verbal-2",
+        "difficulty": 3,
+        "_id": "6a50b13336390d119a9f2018"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     An Irish newspaper editorial encouraging women to participate in the nonimportation movement launched in Ireland in 1779 appears consistent with a perception that the political use of the consumer boycott originated in North America and spread eastwards across the Atlantic to Ireland. This is a view that most historians have concurred with. For example, T. H. Breen argued that the consumer boycott was a \"brilliantly original American invention.\" Breen did acknowledge that \"a few isolated boycotts may have taken place in other countries.\" However, Mary O' Dowd argues that from the late seventeenth century, Irish political discourse advocated for the nonconsumption of imported goods and support for home manufactures by women in ways that were strikingly similar to those used later in North America.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 5 and 6 are based on this passage.</p>",
+        "optiontopcontent": "<p>The passage is primarily concerned with</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>resolving a dispute</p>",
+            "_id": "6a50b19c36390d119a9f209a"
+          },
+          {
+            "content": "<p>advocating a course of action</p>",
+            "_id": "6a50b19c36390d119a9f209b"
+          },
+          {
+            "content": "<p>tracing the evolution of a practice</p>",
+            "_id": "6a50b19c36390d119a9f209c"
+          },
+          {
+            "content": "<p>citing competing views of an issue</p>",
+            "_id": "6a50b19c36390d119a9f209d"
+          },
+          {
+            "content": "<p>chronicling a series of events</p>",
+            "_id": "6a50b19c36390d119a9f209e"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 2,
+        "_id": "6a50b19c36390d119a9f2099"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     An Irish newspaper editorial encouraging women to participate in the nonimportation movement launched in Ireland in 1779 appears consistent with a perception that the political use of the consumer boycott originated in North America and spread eastwards across the Atlantic to Ireland. This is a view that most historians have concurred with. For example, T. H. Breen argued that the consumer boycott was a \"brilliantly original American invention.\" <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">Breen did acknowledge that \"a few isolated boycotts may have taken place in other countries.\"</mark> However, Mary O' Dowd argues that from the late seventeenth century, Irish political discourse advocated for the nonconsumption of imported goods and support for home manufactures by women in ways that were strikingly similar to those used later in North America.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 5 and 6 are based on this passage.</p>",
+        "optiontopcontent": "<p>In the context of the passage, the highlighted sentence serves to</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>qualify a point made in the preceding sentence</p>",
+            "_id": "6a50b22b36390d119a9f2126"
+          },
+          {
+            "content": "<p>correct an erroneous assumption</p>",
+            "_id": "6a50b22b36390d119a9f2127"
+          },
+          {
+            "content": "<p>provide evidence in support of a perception cited in the opening sentence</p>",
+            "_id": "6a50b22b36390d119a9f2128"
+          },
+          {
+            "content": "<p>provide a rationale for the view expressed in the following sentence</p>",
+            "_id": "6a50b22b36390d119a9f2129"
+          },
+          {
+            "content": "<p>establish the popularity of a point of view</p>",
+            "_id": "6a50b22b36390d119a9f212a"
+          }
+        ],
+        "correctAnswerIndices": [
+          0
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 2,
+        "_id": "6a5dc5fc36390d119aab4b77"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     In the early twentieth century, W. E. B. Du Bois and others in the African American literary establishment grappled with questions about the \"criteria of Negro art\" and how African Americans should be portrayed—offering up a set of conventions for what constituted appropriate representations that in some ways echoed calls for portraits of respectability from an earlier era. The younger generation of artists protested, responding with their own sets of literary goals, realized in the short-lived literary journal <em>FIRE!!</em> Artists such as Langston Hughes, Zora Neale Hurston, Wallace Thurman, and Richard Bruce Nugent refused to have their art confined to what they saw as the limiting criteria requiring that African American literature function only on behalf of \"the race.\" They resisted attempts by others to delimit the meaning and parameters of their art, electing instead to engage in thematic and formal innovations in order to challenge these definitional strictures. By the middle of the twentieth century, the task for the Black Arts Movement (BAM) involved articulating a rubric for assessing the value of Black Art outside of Eurocentric aesthetic standards. And while the most vocal proponents of BAM promoted goals and agendas for African American literature that included the celebration of a revolutionary <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">Afrocentric engagement with and reconstruction of Black history, art and music</mark>, they were not able to restrain African American literary creativity to prescriptive criteria. Prescription automatically curtails creativity.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 7 - 9 are based on this passage.</p>",
+        "optiontopcontent": "<p>The author mentions \"Afrocentric engagement with and reconstruction of Black history, art and music\" primarily to</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>support a generalization about revolutionary art</p>",
+            "_id": "6a50b2b236390d119a9f21b8"
+          },
+          {
+            "content": "<p>contrast the goals of competing cultural theorists</p>",
+            "_id": "6a50b2b236390d119a9f21b9"
+          },
+          {
+            "content": "<p>characterize the aims of a particular artistic movement</p>",
+            "_id": "6a50b2b236390d119a9f21ba"
+          },
+          {
+            "content": "<p>cite a controversy among certain African American artists</p>",
+            "_id": "6a50b2b236390d119a9f21bb"
+          },
+          {
+            "content": "<p>emphasize ways in which a particular concept changed over time</p>",
+            "_id": "6a50b2b236390d119a9f21bc"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 3,
+        "_id": "6a50b2b236390d119a9f21b7"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     In the early twentieth century, W. E. B. Du Bois and others in the African American literary establishment grappled with questions about the \"criteria of Negro art\" and how African Americans should be portrayed—offering up a set of conventions for what constituted appropriate representations that in some ways echoed calls for portraits of respectability from an earlier era. The younger generation of artists protested, responding with their own sets of literary goals, realized in the short-lived literary journal <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">FIRE!!</mark> Artists such as Langston Hughes, Zora Neale Hurston, Wallace Thurman, and Richard Bruce Nugent refused to have their art confined to what they saw as the limiting criteria requiring that African American literature function only on behalf of \"the race.\" They resisted attempts by others to delimit the meaning and parameters of their art, electing instead to engage in thematic and formal innovations in order to challenge these definitional strictures. By the middle of the twentieth century, the task for the Black Arts Movement (BAM) involved articulating a rubric for assessing the value of Black Art outside of Eurocentric aesthetic standards. And while the most vocal proponents of BAM promoted goals and agendas for African American literature that included the celebration of a revolutionary Afrocentric engagement with and reconstruction of Black history, art and music, they were not able to restrain African American literary creativity to prescriptive criteria. Prescription automatically curtails creativity.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 7 - 9 are based on this passage.</p>",
+        "optiontopcontent": "<p>The passage suggests which of the following about the literary journal FIRE!!?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>It provided a forum for exploring its contributors' disagreements about the achievements of earlier African American writers.</p>",
+            "_id": "6a50b3a736390d119a9f2250"
+          },
+          {
+            "content": "<p>It was a vehicle for the ideas of W. E. B. Du Bois about ways in which African American writers could help advance certain social objectives.</p>",
+            "_id": "6a50b3a736390d119a9f2251"
+          },
+          {
+            "content": "<p>It was intended in part as a rejoinder to certain prescriptive views about African American literature.</p>",
+            "_id": "6a50b3a736390d119a9f2252"
+          },
+          {
+            "content": "<p>It inspired many artists and thinkers who were later central to the founding of the Black Arts Movement.</p>",
+            "_id": "6a50b3a736390d119a9f2253"
+          },
+          {
+            "content": "<p>It was highly regarded by African American artists but was criticized by some social activists as overly narrow in its aims.</p>",
+            "_id": "6a50b3a736390d119a9f2254"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 4,
+        "_id": "6a50b3a736390d119a9f224f"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     In the early twentieth century, W. E. B. Du Bois and others in the African American literary establishment grappled with questions about the \"criteria of Negro art\" and how African Americans should be portrayed—offering up a set of conventions for what constituted appropriate representations that in some ways echoed calls for portraits of respectability from an earlier era. The younger generation of artists protested, responding with their own sets of literary <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">goals</mark>, realized in the short-lived literary journal FIRE!! Artists such as Langston Hughes, Zora Neale Hurston, Wallace Thurman, and Richard Bruce Nugent refused to have their art confined to what they saw as the limiting criteria requiring that African American literature function only on behalf of \"the race.\" They resisted attempts by others to delimit the meaning and parameters of their art, electing instead to engage in thematic and formal innovations in order to challenge these definitional strictures. By the middle of the twentieth century, the task for the Black Arts Movement (BAM) involved articulating a rubric for assessing the value of Black Art outside of Eurocentric aesthetic standards. And while the most vocal proponents of BAM promoted goals and agendas for African American literature that included the celebration of a revolutionary Afrocentric engagement with and reconstruction of Black history, art and music, they were not able to restrain African American literary creativity to prescriptive criteria. Prescription automatically curtails creativity.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 7 - 9 are based on this passage.</p>",
+        "optiontopcontent": "<p>Which of the following can be inferred about the \"goals\"?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>They were initially conceived by African American artists in diverse fields but were primarily taken up by African American writers.</p>",
+            "_id": "6a50b4e136390d119a9f22ee"
+          },
+          {
+            "content": "<p>They were formulated by literary critics who sought to bring Afrocentric criteria to the evaluation of African American literature.</p>",
+            "_id": "6a50b4e136390d119a9f22ef"
+          },
+          {
+            "content": "<p>They reflected some African American writers' hope that African American literature would increasingly appeal to a broad segment of the reading public.</p>",
+            "_id": "6a50b4e136390d119a9f22f0"
+          },
+          {
+            "content": "<p>They included the use of formal experimentation as a way to challenge certain conceptions about African American literature.</p>",
+            "_id": "6a50b4e136390d119a9f22f1"
+          },
+          {
+            "content": "<p>They were shared by African American writers and other artists who were dissatisfied with a particular interpretation of Black history.</p>",
+            "_id": "6a50b4e136390d119a9f22f2"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 4,
+        "_id": "6a50b4e136390d119a9f22ed"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>There are many insights in the essays collected in <em>Observations on Modernity</em>, but they are embedded in a dense English translation of a dense German original that may make many of them ______ to most readers.</p>",
+        "bottomcontent": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>vapid</p>",
+            "_id": "6a50b52e36390d119a9f2392"
+          },
+          {
+            "content": "<p>inaccessible</p>",
+            "_id": "6a50b52e36390d119a9f2393"
+          },
+          {
+            "content": "<p>sagacious</p>",
+            "_id": "6a50b52e36390d119a9f2394"
+          },
+          {
+            "content": "<p>banal</p>",
+            "_id": "6a50b52e36390d119a9f2395"
+          },
+          {
+            "content": "<p>distressing</p>",
+            "_id": "6a50b52e36390d119a9f2396"
+          },
+          {
+            "content": "<p>opaque</p>",
+            "_id": "6a50b52e36390d119a9f2397"
+          }
+        ],
+        "correctAnswerIndices": [
+          1,
+          5
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 3,
+        "_id": "6a50b52e36390d119a9f2391"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>It is true that propagandists spout misinformation to serve their own ends, but if our minds were ______ such garbage, the lies would die out quickly.</p>",
+        "bottomcontent": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>inhospitable to</p>",
+            "_id": "6a50b58636390d119a9f243e"
+          },
+          {
+            "content": "<p>amenable to</p>",
+            "_id": "6a50b58636390d119a9f243f"
+          },
+          {
+            "content": "<p>unreceptive to</p>",
+            "_id": "6a50b58636390d119a9f2440"
+          },
+          {
+            "content": "<p>unaffected by</p>",
+            "_id": "6a50b58636390d119a9f2441"
+          },
+          {
+            "content": "<p>distorted by</p>",
+            "_id": "6a50b58636390d119a9f2442"
+          },
+          {
+            "content": "<p>governable by</p>",
+            "_id": "6a50b58636390d119a9f2443"
+          }
+        ],
+        "correctAnswerIndices": [
+          0,
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 3,
+        "_id": "6a50b58636390d119a9f243d"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>To help protect the environment, the United States government currently requires safe storage of coal ash for 30 years, \"if feasible,\" but many countries that burn coal lack even such ______ environmental safeguards.</p>",
+        "bottomcontent": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>modest</p>",
+            "_id": "6a50b5c936390d119a9f24f1"
+          },
+          {
+            "content": "<p>onerous</p>",
+            "_id": "6a50b5c936390d119a9f24f2"
+          },
+          {
+            "content": "<p>discretionary</p>",
+            "_id": "6a50b5c936390d119a9f24f3"
+          },
+          {
+            "content": "<p>burdensome</p>",
+            "_id": "6a50b5c936390d119a9f24f4"
+          },
+          {
+            "content": "<p>practical</p>",
+            "_id": "6a50b5c936390d119a9f24f5"
+          },
+          {
+            "content": "<p>optional</p>",
+            "_id": "6a50b5c936390d119a9f24f6"
+          }
+        ],
+        "correctAnswerIndices": [
+          2,
+          5
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 2,
+        "_id": "6a50b5c936390d119a9f24f0"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     Monarch butterflies lay their eggs hundreds of miles away from their places of origin. Each caterpillar that emerges feeds exclusively on milkweed, absorbing the glycosides that milkweed contains. Butterflies retain the glycosides they absorb as caterpillars. Research on monarch butterflies whose migration has been tracked shows that the combination of glycosides in a butterfly always exactly matches the distinctive combination of glycosides that exists in the species of milkweed in the butterfly's place of origin.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Question 13 is based on this passage.</p>",
+        "optiontopcontent": "<p>If the information provided is true, which of the following is most strongly supported on the basis of it?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>The glycosides present in a monarch caterpillar will generally match those that were present in the butterfly that laid the egg from which the caterpillar emerged.</p>",
+            "_id": "6a50b62836390d119a9f25ab"
+          },
+          {
+            "content": "<p>Glycosides play an essential role in the biological mechanism that guides a monarch butterfly in its migration.</p>",
+            "_id": "6a50b62836390d119a9f25ac"
+          },
+          {
+            "content": "<p>The monarch butterflies present in a given region will all contain the same specific combination of glycosides.</p>",
+            "_id": "6a50b62836390d119a9f25ad"
+          },
+          {
+            "content": "<p>A monarch butterfly does not absorb and accumulate glycosides from the milkweed of regions it reaches as a result of migration.</p>",
+            "_id": "6a50b62836390d119a9f25ae"
+          },
+          {
+            "content": "<p>Glycosides are the only identifiable substances from milkweed that accumulate in a monarch caterpillar and are retained in the body of the butterfly after metamorphosis.</p>",
+            "_id": "6a50b62836390d119a9f25af"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 5,
+        "_id": "6a50b62836390d119a9f25aa"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     Because comets are made largely of frozen water (ice) and number perhaps in the trillions, the notion that bombardments by comets originally deposited much of Earth's water had been broadly accepted. But recent measurements of the ratio of deuterium isotopes to hydrogen (D/H ratio) found in water contained in eight Oort cloud comets challenge this idea. <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">Scientists generally assume this ratio has remained unchanged in comets since the solar system's earliest days.</mark> The D/H ratio of the Oort cloud comets is on average twice that of the average isotopic composition of water presently found on Earth. Although it is possible the D/H ratio of ocean water changed over time, most scientists now believe this incompatibility rules out comets as major sources of Earth's water.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 14 and 15 are based on this passage.</p>",
+        "optiontopcontent": "<p>Which of the following best describes the function of the highlighted sentence in the context of the passage as a whole?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>It identifies an assumption underlying a once-common view.</p>",
+            "_id": "6a50b69a36390d119a9f266a"
+          },
+          {
+            "content": "<p>It qualifies the claim made in the previous sentence.</p>",
+            "_id": "6a50b69a36390d119a9f266b"
+          },
+          {
+            "content": "<p>It introduces a premise for the argument that follows.</p>",
+            "_id": "6a50b69a36390d119a9f266c"
+          },
+          {
+            "content": "<p>It explains why a particular notion has been called into question.</p>",
+            "_id": "6a50b69a36390d119a9f266d"
+          },
+          {
+            "content": "<p>It mentions a hypothesis that is validated later in the passage.</p>",
+            "_id": "6a50b69a36390d119a9f266e"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 3,
+        "_id": "6a50b69a36390d119a9f2669"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>     Because comets are made largely of frozen water (ice) and number perhaps in the trillions, the notion that bombardments by comets originally deposited much of Earth's water had been broadly accepted. But recent measurements of the ratio of deuterium isotopes to hydrogen (D/H ratio) found in water contained in eight Oort cloud comets challenge this idea. Scientists generally assume this ratio has remained unchanged in comets since the solar system's earliest days. The D/H ratio of the Oort cloud comets is on average twice that of the average isotopic composition of water presently found on Earth. Although it is possible the D/H ratio of ocean water changed over time, most scientists now believe this <mark data-color=\"#d1d5db\" style=\"background-color: #d1d5db; color: inherit\">incompatibility</mark> rules out comets as major sources of Earth's water.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>Questions 14 and 15 are based on this passage.</p>",
+        "optiontopcontent": "<p>The author of the passage implies that the \"incompatibility\" might be explained by which of the following?</p>",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>Changes in the D/H ratio of water as it moves from one astronomical body to another</p>",
+            "_id": "6a50b71636390d119a9f272f"
+          },
+          {
+            "content": "<p>Variation in the isotopic composition of water from one geographic location to another</p>",
+            "_id": "6a50b71636390d119a9f2730"
+          },
+          {
+            "content": "<p>Differences between the D/H ratio of Earth's ocean water and that of other water on Earth</p>",
+            "_id": "6a50b71636390d119a9f2731"
+          },
+          {
+            "content": "<p>A decrease in the average D/H ratio of water on Earth</p>",
+            "_id": "6a50b71636390d119a9f2732"
+          },
+          {
+            "content": "<p>An increase in the number of existing comets since the Earth's formation</p>",
+            "_id": "6a50b71636390d119a9f2733"
+          }
+        ],
+        "correctAnswerIndices": [
+          0
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "verbal-2",
+        "difficulty": 3,
+        "_id": "6a51a93736390d119a9ff98a"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "<img src=\"https://api.grequantschool.com//uploads/image-1784528523100-486221467.png\" style=\"width: 591px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\"><p style=\"text-align: left\"></p><p style=\"text-align: left\">The figure above shows a shaded section of the lateral surface of a right circular cylinder, where $O$ is the center of a base of the cylinder. The straight edges of the shaded section are parallel to each other and are perpendicular to the bases of the cylinder. The radius of a base of the cylinder is 1 meter, and the height of the cylinder is 8 meters.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a5dc6f536390d119aab5229"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a5dc6f536390d119aab522a"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a5dc6f536390d119aab522b"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a5dc6f536390d119aab522c"
+          }
+        ],
+        "correctAnswerIndices": [
+          1
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p>The area of the shaded section</p>",
+            "quantityA": "<p>The area of the shaded section</p>",
+            "quantityB": "<p><span>$5\\pi$</span> square meters</p>",
+            "optioncontent2": "<p><span>$5\\pi$</span> square meters</p>"
+          }
+        ],
+        "section": "quant-2",
+        "difficulty": 4,
+        "_id": "6a5dc6f536390d119aab5228"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a50b80436390d119a9f28cd"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a50b80436390d119a9f28ce"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a50b80436390d119a9f28cf"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a50b80436390d119a9f28d0"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p><span>$1,000x - 500$</span></p>",
+            "quantityA": "<p><span>$1,000x - 500$</span></p>",
+            "quantityB": "<p><span>$100x + 200$</span></p>",
+            "optioncontent2": "<p><span>$100x + 200$</span></p>"
+          }
+        ],
+        "section": "quant-2",
+        "difficulty": 2,
+        "_id": "6a50b80436390d119a9f28cc"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "<p></p><img src=\"https://api.grequantschool.com//uploads/image-1784528480156-120759052.png\" style=\"width: 601px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\"><p style=\"text-align: center\"></p><p style=\"text-align: center\">Triangle $RST$ is inscribed in the circle with center $O$.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a5dbe7d36390d119aab11c6"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a5dbe7d36390d119aab11c7"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a5dbe7d36390d119aab11c8"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a5dbe7d36390d119aab11c9"
+          }
+        ],
+        "correctAnswerIndices": [
+          0
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p>Twice the perimeter of triangle <span>$RST$</span></p>",
+            "quantityA": "<p>Twice the perimeter of triangle <span>$RST$</span></p>",
+            "quantityB": "<p>The circumference of the circle</p>",
+            "optioncontent2": "<p>The circumference of the circle</p>"
+          }
+        ],
+        "section": "quant-2",
+        "difficulty": 3,
+        "_id": "6a5dbe7d36390d119aab11c5"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "<p style=\"text-align: center\">$$x \\neq 0$$</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a50b8e936390d119a9f2a7a"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a50b8e936390d119a9f2a7b"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a50b8e936390d119a9f2a7c"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a50b8e936390d119a9f2a7d"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p><span>$x^{-10}$</span></p>",
+            "quantityA": "<p><span>$x^{-10}$</span></p>",
+            "quantityB": "<p><span>$x^{-20}$</span></p>",
+            "optioncontent2": "<p><span>$x^{-20}$</span></p>"
+          }
+        ],
+        "section": "quant-2",
+        "difficulty": 2,
+        "_id": "6a50b8e936390d119a9f2a79"
+      },
+      {
+        "type": "fill-blank-another",
+        "content": "<p style=\"text-align: left\">Let $k$ be a positive integer, and let $n$ be a random variable whose values are the integers from 1 to $k$.</p><p style=\"text-align: left\">The probability distribution of $n$ is defined by $P(n) = \\frac{2n - 1}{d}$, where $d$ is a constant.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "Quantity A is greater.",
+            "_id": "6a50c6be36390d119a9f4dc8"
+          },
+          {
+            "content": "Quantity B is greater.",
+            "_id": "6a50c6be36390d119a9f4dc9"
+          },
+          {
+            "content": "The two quantities are equal.",
+            "_id": "6a50c6be36390d119a9f4dca"
+          },
+          {
+            "content": "The relationship cannot be determined from the information given.",
+            "_id": "6a50c6be36390d119a9f4dcb"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": [
+          {
+            "options": null,
+            "correctAnswerIndex": null,
+            "optioncontent": "<p>$$d$$</p>",
+            "quantityA": "<p>$$d$$</p>",
+            "quantityB": "<p>$$k^2$$</p>",
+            "optioncontent2": "<p>$$k^2$$</p>"
+          }
+        ],
+        "section": "quant-2",
+        "difficulty": 5,
+        "_id": "6a50c6be36390d119a9f4dc7"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>The manager of dining services at a small company plans to purchase at least 225 hotdogs and at least 225 buns for the company picnic. The hot dogs can be purchased only in packages of 10, and the buns can be purchased only in packages of 8. If the cost of each package of hot dogs is \\$2.99 and the cost of each package of buns is \\$1.48, which of the following is closest to the least total cost of the hot dogs and buns that the manager plans to purchase?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>$105</p>",
+            "_id": "6a50b9d036390d119a9f2c3b"
+          },
+          {
+            "content": "<p>$109</p>",
+            "_id": "6a50b9d036390d119a9f2c3c"
+          },
+          {
+            "content": "<p>$112</p>",
+            "_id": "6a50b9d036390d119a9f2c3d"
+          },
+          {
+            "content": "<p>$115</p>",
+            "_id": "6a50b9d036390d119a9f2c3e"
+          },
+          {
+            "content": "<p>$121</p>",
+            "_id": "6a50b9d036390d119a9f2c3f"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 4,
+        "_id": "6a50c85036390d119a9f5365"
+      },
+      {
+        "type": "frequency",
+        "content": "<p>A singer recorded 6 songs during a recording session. The average (arithmetic mean) length of the 6 songs was 4.5 minutes. The singer then added a new verse to a song that had originally been 4.0 minutes long and rerecorded that song. The new recording of this song was 5.2 minutes long. What was the average length, in minutes, of the 6 songs after the singer added the verse?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "textorsymbol": true,
+        "textsymbol": "minutes",
+        "textalign": true,
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": {
+          "numerator": 4.7,
+          "denominator": 0,
+          "_id": "6a50ba1236390d119a9f2d25"
+        },
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 5,
+        "_id": "6a50ba1236390d119a9f2d24"
+      },
+      {
+        "type": "mcq",
+        "content": "<p></p><img src=\"https://api.grequantschool.com//uploads/image-1784528598661-221912188.png\" style=\"width: 846px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\"><p></p><p>In the $xy$-plane, line segment $PR$ intersects the $x$-axis at point $Q$ and is parallel to the $y$-axis. If the length of $PQ$ is twice the length of $QR$, what are the coordinates of point $R$, in terms of $a$ and $b$?</p><p></p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "<p><span>$(-a, -\\frac{b}{2})$</span></p>",
+            "_id": "6a50ba9736390d119a9f2e0c"
+          },
+          {
+            "content": "<p><span>$(-\\frac{a}{2}, -b)$</span></p>",
+            "_id": "6a50ba9736390d119a9f2e0d"
+          },
+          {
+            "content": "<p><span>$(\\frac{a}{2}, -b)$</span></p>",
+            "_id": "6a50ba9736390d119a9f2e0e"
+          },
+          {
+            "content": "<p><span>$(a, \\frac{b}{2})$</span></p>",
+            "_id": "6a50ba9736390d119a9f2e0f"
+          },
+          {
+            "content": "<p><span>$(a, -\\frac{b}{2})$</span></p>",
+            "_id": "6a50ba9736390d119a9f2e10"
+          }
+        ],
+        "correctAnswerIndices": [
+          4
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 4,
+        "_id": "6a5dbef636390d119aab1530"
+      },
+      {
+        "type": "mcq",
+        "content": "<p></p><img src=\"https://api.grequantschool.com//uploads/image-1784528716725-742585218.png\" style=\"width: 825px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\"><p></p><p>Each of 50 students took a 40-question quiz, and each student's raw score on the quiz was the number of questions answered correctly. The boxplot above summarizes the 50 raw scores. In order to report scores on a scale for which the maximum score is 100, the reported score for each student was 20 more than twice the raw score. What is the interquartile range of the 50 reported scores?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>40</p>",
+            "_id": "6a50bb1236390d119a9f2efd"
+          },
+          {
+            "content": "<p>36</p>",
+            "_id": "6a50bb1236390d119a9f2efe"
+          },
+          {
+            "content": "<p>20</p>",
+            "_id": "6a50bb1236390d119a9f2eff"
+          },
+          {
+            "content": "<p>16</p>",
+            "_id": "6a50bb1236390d119a9f2f00"
+          },
+          {
+            "content": "<p>8</p>",
+            "_id": "6a50bb1236390d119a9f2f01"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 3,
+        "_id": "6a5dbf5e36390d119aab1adb"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>The function $f$ is defined for all integers $n$ greater than 2 by $f(n) = (1)(2)(3)\\cdots(n-2)$.</p><p></p><p>That is, $f(n)$ is the product of the first $n - 2$ integers. What is the value of $\\frac{f(9)}{f(8)}$?</p><p></p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "<p>9</p>",
+            "_id": "6a50bb6436390d119a9f2ff4"
+          },
+          {
+            "content": "<p>8</p>",
+            "_id": "6a50bb6436390d119a9f2ff5"
+          },
+          {
+            "content": "<p>7</p>",
+            "_id": "6a50bb6436390d119a9f2ff6"
+          },
+          {
+            "content": "<p><span>$\\frac{8}{7}$</span></p>",
+            "_id": "6a50bb6436390d119a9f2ff7"
+          },
+          {
+            "content": "<p><span>$\\frac{7}{6}$</span></p>",
+            "_id": "6a50bb6436390d119a9f2ff8"
+          }
+        ],
+        "correctAnswerIndices": [
+          2
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 2,
+        "_id": "6a50c74936390d119a9f5123"
+      },
+      {
+        "type": "mcq",
+        "content": "<p style=\"text-align: center\">If <span>$r$</span> and <span>$s$</span> are positive integers, which of the following is equal to <span>$r$</span> percent of <span>$s$</span> percent of 200 ?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "<p><span>$\\frac{rs}{100}$</span></p>",
+            "_id": "6a50bbc736390d119a9f30f1"
+          },
+          {
+            "content": "<p><span>$\\frac{rs}{50}$</span></p>",
+            "_id": "6a50bbc736390d119a9f30f2"
+          },
+          {
+            "content": "<p><span>$rs$</span></p>",
+            "_id": "6a50bbc736390d119a9f30f3"
+          },
+          {
+            "content": "<p><span>$2rs$</span></p>",
+            "_id": "6a50bbc736390d119a9f30f4"
+          },
+          {
+            "content": "<p><span>$200rs$</span></p>",
+            "_id": "6a50bbc736390d119a9f30f5"
+          }
+        ],
+        "correctAnswerIndices": [
+          1
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 1,
+        "_id": "6a50bbc736390d119a9f30f0"
+      },
+      {
+        "type": "mcq",
+        "content": "<p><span>An investor invested $x$ dollars into each of two certificates of deposit. One certificate of deposit earned 3 percent interest compounded annually for $k$ years. The other certificate of deposit earned 2.4 percent interest compounded annually for $n$ years. Which of the following expressions represents the total amount of interest, in dollars, earned by the two certificates of deposi</span>t?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p><span>$(0.03k + 0.024n)x$</span></p>",
+            "_id": "6a50bcb936390d119a9f31f4"
+          },
+          {
+            "content": "<p><span>$(1.03k + 1.024n - 2)x$</span></p>",
+            "_id": "6a50bcb936390d119a9f31f5"
+          },
+          {
+            "content": "<p><span>$(0.03^k + 0.024^n)x$</span></p>",
+            "_id": "6a50bcb936390d119a9f31f6"
+          },
+          {
+            "content": "<p><span>$(1.03^k + 1.024^n - 2)x$</span></p>",
+            "_id": "6a50bcb936390d119a9f31f7"
+          },
+          {
+            "content": "<p><span>$((1.03 + 1.024)(\\frac{k + n}{2}) - 2)x$</span></p>",
+            "_id": "6a50bcb936390d119a9f31f8"
+          }
+        ],
+        "correctAnswerIndices": [
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 5,
+        "_id": "6a50bcb936390d119a9f31f3"
+      },
+      {
+        "type": "mcq",
+        "content": "<img src=\"https://api.grequantschool.com//uploads/image-1784529476853-977044110.png\" style=\"width: 804px; height: auto; cursor: pointer; margin: 0px auto;\" draggable=\"true\"><p></p><p>The figure shows the $xy$-plane with its quadrants labeled. Curve $C$ is the graph of the equation $y = ax^2 + b$, where $a &gt; 0$ and $b &lt; 0$. Which quadrants contain points of curve $C$?</p><p></p><p>Indicate <u>all</u> such quadrants.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>I</p>",
+            "_id": "6a50bdd536390d119a9f32fd"
+          },
+          {
+            "content": "<p>II</p>",
+            "_id": "6a50bdd536390d119a9f32fe"
+          },
+          {
+            "content": "<p>III</p>",
+            "_id": "6a50bdd536390d119a9f32ff"
+          },
+          {
+            "content": "<p>IV</p>",
+            "_id": "6a50bdd536390d119a9f3300"
+          }
+        ],
+        "correctAnswerIndices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 4,
+        "_id": "6a5dc2d136390d119aab3a92"
+      },
+      {
+        "type": "mcq",
+        "content": "<p>Each of Rachelle's clients is a resident of one of four cities: <span>$R$</span>, <span>$S$</span>, <span>$T$</span>, or <span>$W$</span>. Of these clients, 20 percent are residents of City <span>$R$</span>, 25 percent are residents of City <span>$S$</span>, and <span>$x$</span> percent are residents of City <span>$T$</span>. Which of the following expressions represent the number of Rachelle's clients who are residents of City <span>$W$</span> as a fraction of all her clients? </p><p></p><p>Indicate <u>all</u> such expressions.</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": true,
+        "optionstype": "horizontal",
+        "options": [
+          {
+            "content": "<p><span>$1 - \\left(\\frac{55 - x}{100}\\right)$</span></p>",
+            "_id": "6a50be4a36390d119a9f3524"
+          },
+          {
+            "content": "<p><span>$1 - \\left(\\frac{45 + x}{100}\\right)$</span></p>",
+            "_id": "6a50be4a36390d119a9f3525"
+          },
+          {
+            "content": "<p><span>$\\frac{45 - x}{100}$</span></p>",
+            "_id": "6a50be4a36390d119a9f3526"
+          },
+          {
+            "content": "<p><span>$\\frac{55 - x}{100}$</span></p>",
+            "_id": "6a50be4a36390d119a9f3527"
+          },
+          {
+            "content": "<p><span>$\\frac{55 + x}{100}$</span></p>",
+            "_id": "6a50be4a36390d119a9f3528"
+          }
+        ],
+        "correctAnswerIndices": [
+          1,
+          3
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 4,
+        "_id": "6a50be4a36390d119a9f3523"
+      },
+      {
+        "type": "mcq",
+        "content": "<p style=\"text-align: center\">$$A = \\{7, 8, 9, 10, 11\\}$$</p><p style=\"text-align: center\">$$B = \\{25, 26, 27, 28\\}$$</p><p style=\"text-align: center\"></p><p>If a number <span>$x$</span> is selected from set <span>$A$</span> and a number <span>$y$</span> is selected from set <span>$B$</span>, then <span>$x + y$</span> can have how many different possible values?</p>",
+        "bottomcontent": "",
+        "contentnote": "",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "vertical",
+        "options": [
+          {
+            "content": "<p>Eight</p>",
+            "_id": "6a50be9b36390d119a9f3754"
+          },
+          {
+            "content": "<p>Ten</p>",
+            "_id": "6a50be9b36390d119a9f3755"
+          },
+          {
+            "content": "<p>Twelve</p>",
+            "_id": "6a50be9b36390d119a9f3756"
+          },
+          {
+            "content": "<p>Fifteen</p>",
+            "_id": "6a50be9b36390d119a9f3757"
+          },
+          {
+            "content": "<p>Twenty</p>",
+            "_id": "6a50be9b36390d119a9f3758"
+          }
+        ],
+        "correctAnswerIndices": [
+          0
+        ],
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "quant-2",
+        "difficulty": 3,
+        "_id": "6a50be9b36390d119a9f3753"
+      },
+      {
+        "type": "sidebyside",
+        "content": "<p>Write a response in which you discuss the extent to which you agree or disagree with the claim. In developing and supporting your position, be sure to address the most compelling reasons and/or examples that could be used to challenge your position.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p>It is no longer possible for a society to regard any living man or woman as a hero.</p>",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "awa",
+        "difficulty": 3,
+        "_id": "6a560d8d36390d119aa25630"
+      },
+      {
+        "type": "sidebyside",
+        "content": "<p>Write a response in which you discuss the extent to which you agree or disagree with the claim and the reason on which that claim is based.</p>",
+        "bottomcontent": "",
+        "contentnote": "<p><strong>Claim:</strong> No act is done purely for the benefit of others.</p><p></p><p><strong>Reason:</strong> All actions - even those that seem to be done for other people - are based on self-interest.</p>",
+        "optiontopcontent": "",
+        "optionbottomcontent": "",
+        "optionnote": "",
+        "copypast": false,
+        "quantity": false,
+        "singleormultiple": false,
+        "optionstype": "horizontal",
+        "options": null,
+        "correctAnswerIndices": null,
+        "correctAnswerFraction": null,
+        "blanks": null,
+        "section": "awa",
+        "difficulty": 1,
+        "_id": "6a560ddd36390d119aa25746"
+      }
+    ],
+    "createdBy": "6869fe441f8b3a5fd5f26e94",
+    "isPublished": true,
+    "isPaid": false,
+    "price": 299,
+    "usdPrice": 1,
+    "explanationFee": 0,
+    "explanationUsdFee": 1,
+    "attemptLimit": 0,
+    "testDate": "2026-03-31T18:00:00.000Z",
+    "quantVideoLink": "https://drive.google.com/file/d/1u2SBxTK2G4VC5Kx3HKs6q0iLUkmexb2_/view?usp=sharing",
+    "quantVideoId": "6ae4df5aaa145c03f2b8dfd5",
+    "order": 75,
+    "createdAt": "2026-07-10T07:47:59.123Z",
+    "updatedAt": "2026-11-11T13:01:12.753Z"
+  }
+]

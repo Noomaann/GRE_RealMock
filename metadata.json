@@ -1,0 +1,6 @@
+{
+  "name": "GRE Quant & Verbal Studio — Monthly Test Bank & Error Log",
+  "description": "Local-first GRE preparation suite featuring 78 monthly mock tests (March–October 2026, 4,291 questions), Timed & Untimed modes, Error Log analytics, and per-question Study Notes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

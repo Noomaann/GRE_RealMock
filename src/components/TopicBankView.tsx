@@ -16,15 +16,20 @@ import {
   stripHtmlToText,
 } from '../utils/greLogic';
 import {
+  buildTopicPracticeSets,
   classifyQuestionTopic,
   getErrorsForTopic,
+  getNextUncompletedSet,
   getNotesForTopic,
   getQuestionDedupKey,
+  getTopicSetCompletionMap,
   RC_SINGLE_LATEST_LIMIT,
   selectLatestRcSingleQuestions,
   TOPIC_CATEGORIES,
+  TOPIC_SET_SIZE,
   TopicCategoryDef,
   TopicDomain,
+  TopicPracticeSet,
 } from '../utils/topicClassifier';
 import { QuestionRenderer } from './QuestionRenderer';
 import { RichAnswerSummary } from './RichAnswerSummary';
@@ -35,14 +40,16 @@ import {
   AlertTriangle,
   ArrowLeft,
   BookOpenCheck,
+  CheckCircle2,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   ChevronUp,
   Clock,
-  FolderOpen,
+  Layers,
   NotebookPen,
   Play,
+  RotateCcw,
   Save,
   Search,
   X,
@@ -54,6 +61,8 @@ interface TopicBankViewProps {
   errorLog: ErrorLogEntry[];
   notes: StudyNote[];
   attempts: TestAttempt[];
+  selectedCategoryId: string | null;
+  onSelectCategoryId: (id: string | null) => void;
   onStartSession: (config: PracticeSessionConfig) => void;
   onInspectAttempt: (attempt: TestAttempt) => void;
   onSaveTopicNote: (params: {
@@ -110,6 +119,8 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
   errorLog,
   notes,
   attempts,
+  selectedCategoryId,
+  onSelectCategoryId,
   onStartSession,
   onInspectAttempt,
   onSaveTopicNote,
@@ -129,9 +140,9 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
   // Slide-over Section Revision Notes Drawer (accessible right beside every Quant/Verbal section)
   const [notesDrawerTopicId, setNotesDrawerTopicId] = useState<string | null>(null);
 
-  // Selected Category Explorer state
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
-  const [explorerTab, setExplorerTab] = useState<'questions' | 'errors' | 'notes'>('questions');
+  // Selected Category Explorer state (default to 20-question Practice Sets)
+  const [explorerTab, setExplorerTab] = useState<'sets' | 'questions' | 'errors' | 'notes'>('sets');
+  const [setStatusFilter, setSetStatusFilter] = useState<'all' | 'remaining' | 'completed'>('all');
   const [explorerFormat, setExplorerFormat] = useState<string>('all');
   const [explorerPool, setExplorerPool] = useState<'all' | 'errors' | 'bookmarked'>('all');
   const [explorerSearch, setExplorerSearch] = useState<string>('');
@@ -262,6 +273,18 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
     return map;
   }, [filteredPool]);
 
+  // Pre-build 20-question sequential practice sets for every topic + completion map
+  const setCompletionMap = useMemo(() => getTopicSetCompletionMap(attempts), [attempts]);
+
+  const setsByCategoryId = useMemo(() => {
+    const map: Record<string, TopicPracticeSet[]> = {};
+    for (const cat of TOPIC_CATEGORIES) {
+      const qs = (itemsByCategoryId[cat.id] || []).map((i) => i.question);
+      map[cat.id] = buildTopicPracticeSets(cat.id, qs, TOPIC_SET_SIZE);
+    }
+    return map;
+  }, [itemsByCategoryId]);
+
   const domainCounts = useMemo(() => {
     let quant = 0;
     let verbal = 0;
@@ -360,6 +383,36 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
     });
   };
 
+  const launchPracticeSet = (
+    cat: TopicCategoryDef,
+    set: TopicPracticeSet,
+    mode: 'untimed' | 'timed',
+    alwaysShowAnswers = false
+  ) => {
+    if (set.questions.length === 0) return;
+    onSelectCategoryId(cat.id);
+    const minutesPerQ = cat.domain === 'awa' ? 30 : cat.domain === 'quant' ? 1.75 : 1.5;
+    const estMinutes = Math.max(10, Math.round(set.questions.length * minutesPerQ));
+
+    onStartSession({
+      title: `${cat.name} — Set ${set.setNumber}`,
+      subtitle: `${cat.pillar} · Q${set.startIndex}–Q${set.endIndex} (${set.questions.length} Qs)`,
+      monthId: globalMonth === 'all' ? 'topic-bank' : globalMonth,
+      monthLabel:
+        globalMonth === 'all'
+          ? 'All Months'
+          : MONTH_CONFIGS.find((m) => m.id === globalMonth)?.label || globalMonth,
+      testId: set.setId,
+      testTitle: `${cat.name} — Set ${set.setNumber} (Q${set.startIndex}–Q${set.endIndex})`,
+      mode,
+      timeLimitMinutes: mode === 'timed' ? estMinutes : 0,
+      sectionFilter: cat.id,
+      questions: set.questions,
+      instantFeedbackAllowed: mode === 'untimed',
+      alwaysShowAnswers: mode === 'untimed' && alwaysShowAnswers,
+    });
+  };
+
   const launchSingleQuestionPractice = (q: GREQuestion, title: string) => {
     onStartSession({
       title: `Note Review: ${title}`,
@@ -379,10 +432,11 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
 
   const openCategoryExplorer = (
     catId: string,
-    initialTab: 'questions' | 'errors' | 'notes' = 'questions'
+    initialTab: 'sets' | 'questions' | 'errors' | 'notes' = 'sets'
   ) => {
-    setSelectedCategoryId(catId);
+    onSelectCategoryId(catId);
     setExplorerTab(initialTab);
+    setSetStatusFilter('all');
     setExplorerFormat('all');
     setExplorerPool('all');
     setExplorerSearch('');
@@ -457,7 +511,18 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
   // ===================== CATEGORY QUESTION EXPLORER VIEW =====================
   if (selectedCategory) {
     const questionsForLaunch = explorerItems.map((i) => i.question);
-    const activeLimit = sessionLength === 0 ? questionsForLaunch.length : sessionLength;
+    const topicSets = setsByCategoryId[selectedCategory.id] || [];
+    const completedSetsCount = topicSets.filter((s) => Boolean(setCompletionMap[s.setId])).length;
+    const nextUncompletedSet = getNextUncompletedSet(topicSets, setCompletionMap);
+    const filteredTopicSets = topicSets.filter((s) => {
+      const done = Boolean(setCompletionMap[s.setId]);
+      if (setStatusFilter === 'completed') return done;
+      if (setStatusFilter === 'remaining') return !done;
+      return true;
+    });
+    const progressPct =
+      topicSets.length > 0 ? Math.round((completedSetsCount / topicSets.length) * 100) : 0;
+
     const topicErrors = errorsByTopicId[selectedCategory.id] || [];
     const topicNotes = notesByTopicId[selectedCategory.id] || [];
     const isRcSingle = selectedCategory.id === 'verbal-rc-single';
@@ -470,7 +535,7 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
             <div className="space-y-1.5">
               <button
                 type="button"
-                onClick={() => setSelectedCategoryId(null)}
+                onClick={() => onSelectCategoryId(null)}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3A5F] dark:text-blue-400 hover:underline"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
@@ -488,8 +553,16 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
                 <span>{selectedCategory.pillar}</span>
                 <span aria-hidden="true">·</span>
                 <span className="font-mono-tabular font-semibold text-slate-800 dark:text-slate-200">
-                  {explorerItems.length} Matching Questions
+                  {explorerItems.length} Questions · {topicSets.length} Sets of {TOPIC_SET_SIZE}
                 </span>
+                {completedSetsCount > 0 && (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    <span className="font-mono-tabular font-semibold text-emerald-700 dark:text-emerald-400">
+                      {completedSetsCount} / {topicSets.length} Sets Completed
+                    </span>
+                  </>
+                )}
                 {isRcSingle && totalRcSingleUnfiltered > RC_SINGLE_LATEST_LIMIT && (
                   <>
                     <span aria-hidden="true">·</span>
@@ -510,66 +583,56 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
             <div className="flex flex-wrap items-center gap-2 shrink-0">
               <button
                 type="button"
-                disabled={questionsForLaunch.length === 0}
+                disabled={!nextUncompletedSet}
                 onClick={() =>
-                  launchCategorySession(
-                    selectedCategory,
-                    questionsForLaunch,
-                    'untimed',
-                    false,
-                    activeLimit
-                  )
+                  nextUncompletedSet &&
+                  launchPracticeSet(selectedCategory, nextUncompletedSet, 'untimed', false)
                 }
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-[#F3F1EC] dark:bg-[#0E1117] hover:bg-[#E7E4DC] dark:hover:bg-slate-800 border border-[#D8D5CC] dark:border-[#2A3240] text-slate-900 dark:text-white disabled:opacity-40 transition-colors whitespace-nowrap"
               >
                 <Play className="w-3.5 h-3.5 text-[#1E3A5F] dark:text-blue-400" />
-                Practice Untimed ({Math.min(activeLimit, questionsForLaunch.length)})
+                {nextUncompletedSet
+                  ? `Start Set ${nextUncompletedSet.setNumber} (${nextUncompletedSet.questions.length} Qs)`
+                  : 'Practice Untimed'}
               </button>
 
               <button
                 type="button"
-                disabled={questionsForLaunch.length === 0}
+                disabled={!nextUncompletedSet}
                 onClick={() =>
-                  launchCategorySession(
-                    selectedCategory,
-                    questionsForLaunch,
-                    'timed',
-                    false,
-                    activeLimit
-                  )
+                  nextUncompletedSet &&
+                  launchPracticeSet(selectedCategory, nextUncompletedSet, 'timed', false)
                 }
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-[#1E3A5F] hover:bg-[#162C49] dark:bg-blue-600 dark:hover:bg-blue-500 text-white disabled:opacity-40 transition-colors whitespace-nowrap"
               >
                 <Clock className="w-3.5 h-3.5" />
-                Timed Drill ({Math.min(activeLimit, questionsForLaunch.length)})
+                {nextUncompletedSet
+                  ? `Timed Set ${nextUncompletedSet.setNumber}`
+                  : 'Timed Drill'}
               </button>
 
               <button
                 type="button"
-                disabled={questionsForLaunch.length === 0}
+                disabled={!nextUncompletedSet}
                 onClick={() =>
-                  launchCategorySession(
-                    selectedCategory,
-                    questionsForLaunch,
-                    'untimed',
-                    true,
-                    activeLimit
-                  )
+                  nextUncompletedSet &&
+                  launchPracticeSet(selectedCategory, nextUncompletedSet, 'untimed', true)
                 }
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-700 hover:bg-emerald-600 text-white disabled:opacity-40 transition-colors whitespace-nowrap"
               >
                 <BookOpenCheck className="w-3.5 h-3.5" />
-                Study Key Mode
+                Study Key
               </button>
             </div>
           </div>
 
-          {/* 3-Tab Sub-Navigation: Questions · Topic Error Log · Revision Notes */}
+          {/* 4-Tab Sub-Navigation: Practice Sets · All Questions · Topic Error Log · Revision Notes */}
           <div className="pt-4 border-t border-[#E4E2DC] dark:border-[#262D38] flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-1 p-1 rounded-lg bg-[#F3F1EC] dark:bg-[#0E1117]">
+            <div className="flex items-center gap-1 p-1 rounded-lg bg-[#F3F1EC] dark:bg-[#0E1117] overflow-x-auto">
               {(
                 [
-                  { id: 'questions', label: `Questions (${explorerItems.length})` },
+                  { id: 'sets', label: `Practice Sets (${topicSets.length})` },
+                  { id: 'questions', label: `All Questions (${explorerItems.length})` },
                   { id: 'errors', label: `Topic Error Log (${topicErrors.length})` },
                   { id: 'notes', label: `Revision Notes (${topicNotes.length})` },
                 ] as const
@@ -578,7 +641,7 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
                   key={t.id}
                   type="button"
                   onClick={() => setExplorerTab(t.id)}
-                  className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap ${
+                  className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
                     explorerTab === t.id
                       ? 'bg-[#1E3A5F] dark:bg-blue-600 text-white'
                       : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
@@ -588,6 +651,22 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
                 </button>
               ))}
             </div>
+
+            {explorerTab === 'sets' && (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-xs font-mono-tabular text-slate-600 dark:text-slate-400">
+                  <span className="font-semibold text-emerald-700 dark:text-emerald-400">
+                    {completedSetsCount}/{topicSets.length} Done ({progressPct}%)
+                  </span>
+                  <div className="w-24 h-1.5 rounded-full bg-[#E4E2DC] dark:bg-slate-800 overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-600 dark:bg-emerald-500 transition-all"
+                      style={{ width: `${progressPct}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
             {explorerTab === 'questions' && (
               <div className="text-xs text-slate-500 dark:text-slate-400">
@@ -697,6 +776,214 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
             </div>
           )}
         </div>
+
+        {/* Sub-Tab 0 (Default): 20-Question Practice Sets Grid */}
+        {explorerTab === 'sets' && (
+          <section className="space-y-4">
+            {/* Set Status Filter Row */}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-1 p-1 rounded-lg bg-white dark:bg-[#161B22] border border-[#E4E2DC] dark:border-[#262D38]">
+                {(
+                  [
+                    { id: 'all', label: `All Sets (${topicSets.length})` },
+                    {
+                      id: 'remaining',
+                      label: `Remaining (${topicSets.length - completedSetsCount})`,
+                    },
+                    { id: 'completed', label: `Completed (${completedSetsCount})` },
+                  ] as const
+                ).map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setSetStatusFilter(tab.id)}
+                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap ${
+                      setStatusFilter === tab.id
+                        ? 'bg-[#1E3A5F] dark:bg-blue-600 text-white'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="text-xs text-slate-500 dark:text-slate-400">
+                Each set holds up to <span className="font-mono-tabular font-semibold">{TOPIC_SET_SIZE}</span> questions · Finished sets turn green automatically
+              </div>
+            </div>
+
+            {filteredTopicSets.length === 0 ? (
+              <div className="bg-white dark:bg-[#161B22] border border-[#E4E2DC] dark:border-[#262D38] rounded-xl p-10 text-center space-y-2">
+                <div className="text-sm font-bold text-slate-900 dark:text-white">
+                  {setStatusFilter === 'completed'
+                    ? 'No Completed Sets Yet'
+                    : setStatusFilter === 'remaining'
+                    ? 'All Sets Completed!'
+                    : 'No Questions Available in Current Filter'}
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {setStatusFilter === 'completed'
+                    ? 'Finish any 20-question set and submit to mark it green here.'
+                    : setStatusFilter === 'remaining'
+                    ? 'Great work — every practice set in this chapter is completed.'
+                    : 'Try resetting Month or Difficulty filters.'}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredTopicSets.map((set) => {
+                  const completion = setCompletionMap[set.setId];
+                  const isCompleted = Boolean(completion);
+                  const isNextUp =
+                    !isCompleted && nextUncompletedSet?.setId === set.setId;
+
+                  let easy = 0;
+                  let med = 0;
+                  let hard = 0;
+                  for (const q of set.questions) {
+                    const d = q.difficulty || 3;
+                    if (d <= 2) easy++;
+                    else if (d === 3) med++;
+                    else hard++;
+                  }
+
+                  return (
+                    <article
+                      key={set.setId}
+                      data-set-number={set.setNumber}
+                      data-completed={isCompleted ? 'true' : 'false'}
+                      className={`rounded-xl p-5 flex flex-col justify-between gap-4 border transition-colors ${
+                        isCompleted
+                          ? 'bg-emerald-50/90 dark:bg-emerald-950/35 border-emerald-500/75 dark:border-emerald-500/55'
+                          : isNextUp
+                          ? 'bg-white dark:bg-[#161B22] border-[#1E3A5F]/65 dark:border-blue-500/65'
+                          : 'bg-white dark:bg-[#161B22] border-[#E4E2DC] dark:border-[#262D38] hover:border-[#1E3A5F]/45 dark:hover:border-blue-500/45'
+                      }`}
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between gap-2 text-xs">
+                          <span
+                            className={`font-semibold inline-flex items-center gap-1.5 ${
+                              isCompleted
+                                ? 'text-emerald-800 dark:text-emerald-300'
+                                : isNextUp
+                                ? 'text-[#1E3A5F] dark:text-blue-400'
+                                : 'text-slate-500 dark:text-slate-400'
+                            }`}
+                          >
+                            {isCompleted ? (
+                              <>
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                                Completed
+                              </>
+                            ) : isNextUp ? (
+                              'Next Up'
+                            ) : (
+                              `Practice Set`
+                            )}
+                          </span>
+
+                          <span className="font-mono-tabular font-bold text-slate-800 dark:text-slate-200">
+                            {set.questions.length} Qs
+                          </span>
+                        </div>
+
+                        <div className="flex items-baseline justify-between gap-2">
+                          <h3
+                            className={`text-lg font-bold tracking-tight ${
+                              isCompleted
+                                ? 'text-emerald-950 dark:text-emerald-100'
+                                : 'text-slate-900 dark:text-white'
+                            }`}
+                          >
+                            Set {set.setNumber}
+                          </h3>
+                          <span className="text-xs font-mono-tabular text-slate-600 dark:text-slate-400">
+                            Q{set.startIndex} – Q{set.endIndex}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-mono-tabular text-slate-600 dark:text-slate-400">
+                          <span>Easy {easy}</span>
+                          <span aria-hidden="true">·</span>
+                          <span>Med {med}</span>
+                          <span aria-hidden="true">·</span>
+                          <span>Hard {hard}</span>
+                        </div>
+
+                        {completion && (
+                          <div className="pt-2 border-t border-emerald-500/30 flex items-center justify-between text-xs">
+                            <span className="font-mono-tabular font-bold text-emerald-800 dark:text-emerald-300">
+                              Best: {completion.bestAccuracy}% ({completion.completedCount}x)
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => onInspectAttempt(completion.lastAttempt)}
+                              className="inline-flex items-center gap-1 text-emerald-800 dark:text-emerald-300 hover:underline font-semibold"
+                            >
+                              <RotateCcw className="w-3 h-3" /> Review Last
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <div
+                        className={`pt-3.5 border-t flex items-center gap-1.5 ${
+                          isCompleted
+                            ? 'border-emerald-500/30'
+                            : 'border-[#E4E2DC] dark:border-[#262D38]'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() =>
+                            launchPracticeSet(selectedCategory, set, 'untimed', false)
+                          }
+                          className={`flex-1 inline-flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg text-xs font-semibold border transition-colors whitespace-nowrap ${
+                            isCompleted
+                              ? 'bg-white/90 dark:bg-[#0E1117]/80 hover:bg-white border-emerald-600/35 text-emerald-900 dark:text-emerald-200'
+                              : 'bg-[#F3F1EC] dark:bg-[#0E1117] hover:bg-[#E7E4DC] dark:hover:bg-slate-800 border-[#D8D5CC] dark:border-[#2A3240] text-slate-900 dark:text-white'
+                          }`}
+                        >
+                          <Play className="w-3 h-3" />
+                          {isCompleted ? 'Redo' : 'Untimed'}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            launchPracticeSet(selectedCategory, set, 'timed', false)
+                          }
+                          className={`flex-1 inline-flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${
+                            isCompleted
+                              ? 'bg-emerald-700 hover:bg-emerald-600 text-white'
+                              : 'bg-[#1E3A5F] hover:bg-[#162C49] dark:bg-blue-600 dark:hover:bg-blue-500 text-white'
+                          }`}
+                        >
+                          <Clock className="w-3 h-3" />
+                          Timed
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            launchPracticeSet(selectedCategory, set, 'untimed', true)
+                          }
+                          className="inline-flex items-center justify-center p-2 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-600/35 text-emerald-800 dark:text-emerald-300 transition-colors shrink-0"
+                          title={`Study Set ${set.setNumber} with Official Answer Keys`}
+                          aria-label={`Study Answer Key for Set ${set.setNumber}`}
+                        >
+                          <BookOpenCheck className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        )}
 
         {/* Sub-Tab 2: Topic Error Log */}
         {explorerTab === 'errors' && (
@@ -1021,6 +1308,12 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
           {cats.map((cat) => {
             const items = itemsByCategoryId[cat.id] || [];
             const questions = items.map((i) => i.question);
+            const topicSets = setsByCategoryId[cat.id] || [];
+            const completedSetsCount = topicSets.filter((s) =>
+              Boolean(setCompletionMap[s.setId])
+            ).length;
+            const nextSet = getNextUncompletedSet(topicSets, setCompletionMap);
+
             let easy = 0;
             let med = 0;
             let hard = 0;
@@ -1040,11 +1333,16 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
                 ? Math.round((mastery.correct / mastery.answered) * 100)
                 : null;
             const isRcSingle = cat.id === 'verbal-rc-single';
+            const allSetsDone = topicSets.length > 0 && completedSetsCount === topicSets.length;
 
             return (
               <article
                 key={cat.id}
-                className="bg-white dark:bg-[#161B22] border border-[#E4E2DC] dark:border-[#262D38] rounded-xl p-5 flex flex-col justify-between gap-4 hover:border-[#1E3A5F]/50 dark:hover:border-blue-500/50 transition-colors"
+                className={`rounded-xl p-5 flex flex-col justify-between gap-4 border transition-colors ${
+                  allSetsDone
+                    ? 'bg-emerald-50/70 dark:bg-emerald-950/25 border-emerald-500/65'
+                    : 'bg-white dark:bg-[#161B22] border-[#E4E2DC] dark:border-[#262D38] hover:border-[#1E3A5F]/50 dark:hover:border-blue-500/50'
+                }`}
               >
                 <div className="space-y-2">
                   {/* Top Row: Pillar + Question Count + Direct Section Notes Button */}
@@ -1074,7 +1372,13 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
                   </div>
 
                   <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
-                    {cat.name}
+                    <button
+                      type="button"
+                      onClick={() => openCategoryExplorer(cat.id, 'sets')}
+                      className="text-left hover:text-[#1E3A5F] dark:hover:text-blue-400 transition-colors"
+                    >
+                      {cat.name}
+                    </button>
                   </h3>
 
                   <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -1088,6 +1392,18 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
                   )}
 
                   <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-mono-tabular text-slate-500 dark:text-slate-400 pt-1">
+                    <span
+                      className={
+                        completedSetsCount > 0
+                          ? 'text-emerald-700 dark:text-emerald-400 font-semibold'
+                          : 'text-slate-700 dark:text-slate-300 font-semibold'
+                      }
+                    >
+                      {completedSetsCount > 0
+                        ? `${completedSetsCount}/${topicSets.length} Sets Done`
+                        : `${topicSets.length} Sets`}
+                    </span>
+                    <span aria-hidden="true">·</span>
                     <span>Easy {easy}</span>
                     <span aria-hidden="true">·</span>
                     <span>Med {med}</span>
@@ -1121,32 +1437,42 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
                   <button
                     type="button"
                     disabled={questions.length === 0}
-                    onClick={() => openCategoryExplorer(cat.id, 'questions')}
+                    onClick={() => openCategoryExplorer(cat.id, 'sets')}
                     className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg text-xs font-semibold bg-[#F3F1EC] dark:bg-[#0E1117] hover:bg-[#E7E4DC] dark:hover:bg-slate-800 border border-[#D8D5CC] dark:border-[#2A3240] text-slate-900 dark:text-white disabled:opacity-40 transition-colors whitespace-nowrap"
                   >
-                    <FolderOpen className="w-3.5 h-3.5 text-[#1E3A5F] dark:text-blue-400" />
-                    Browse
+                    <Layers className="w-3.5 h-3.5 text-[#1E3A5F] dark:text-blue-400" />
+                    Sets ({topicSets.length})
                   </button>
 
                   <button
                     type="button"
-                    disabled={questions.length === 0}
+                    disabled={!nextSet}
                     onClick={() =>
-                      launchCategorySession(cat, questions, 'untimed', false, 20)
+                      nextSet && launchPracticeSet(cat, nextSet, 'untimed', false)
                     }
                     className="flex-1 inline-flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg text-xs font-semibold bg-white dark:bg-[#161B22] hover:bg-[#F7F6F2] dark:hover:bg-slate-800 border border-[#D8D5CC] dark:border-[#2A3240] text-slate-800 dark:text-slate-200 disabled:opacity-40 transition-colors whitespace-nowrap"
+                    title={
+                      nextSet
+                        ? `Start Set ${nextSet.setNumber} (Q${nextSet.startIndex}–Q${nextSet.endIndex}) Untimed`
+                        : undefined
+                    }
                   >
                     <Play className="w-3 h-3 text-[#1E3A5F] dark:text-blue-400" />
-                    Drill
+                    {nextSet ? `Set ${nextSet.setNumber}` : 'Drill'}
                   </button>
 
                   <button
                     type="button"
-                    disabled={questions.length === 0}
+                    disabled={!nextSet}
                     onClick={() =>
-                      launchCategorySession(cat, questions, 'timed', false, 20)
+                      nextSet && launchPracticeSet(cat, nextSet, 'timed', false)
                     }
                     className="flex-1 inline-flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg text-xs font-semibold bg-[#1E3A5F] hover:bg-[#162C49] dark:bg-blue-600 dark:hover:bg-blue-500 text-white disabled:opacity-40 transition-colors whitespace-nowrap"
+                    title={
+                      nextSet
+                        ? `Start Set ${nextSet.setNumber} (Q${nextSet.startIndex}–Q${nextSet.endIndex}) Timed`
+                        : undefined
+                    }
                   >
                     <Clock className="w-3 h-3" />
                     Timed
@@ -1154,12 +1480,16 @@ export const TopicBankView: React.FC<TopicBankViewProps> = ({
 
                   <button
                     type="button"
-                    disabled={questions.length === 0}
+                    disabled={!nextSet}
                     onClick={() =>
-                      launchCategorySession(cat, questions, 'untimed', true, 20)
+                      nextSet && launchPracticeSet(cat, nextSet, 'untimed', true)
                     }
                     className="inline-flex items-center justify-center p-2 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border border-emerald-600/30 text-emerald-800 dark:text-emerald-300 disabled:opacity-40 transition-colors shrink-0"
-                    title={`Study ${cat.name} with Official Answer Keys Visible`}
+                    title={
+                      nextSet
+                        ? `Study Set ${nextSet.setNumber} with Official Answer Keys Visible`
+                        : `Study ${cat.name}`
+                    }
                     aria-label={`Study Answer Key for ${cat.name}`}
                   >
                     <BookOpenCheck className="w-3.5 h-3.5" />

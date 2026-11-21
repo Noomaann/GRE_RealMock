@@ -414,3 +414,95 @@ test('getNotesForTopic aggregates both chapter notes and question-level notes un
   assert.equal(cgErrors[0].id, coordGeoQ._id);
 });
 
+test('buildTopicPracticeSets splits a topic into 20-question sets and advances past completed sets', async () => {
+  const {
+    buildTopicPracticeSets,
+    getTopicSetCompletionMap,
+    getNextUncompletedSet,
+    TOPIC_SET_SIZE,
+  } = await import('./topicClassifier');
+
+  assert.equal(TOPIC_SET_SIZE, 20);
+
+  // Simulate Number Properties with 167 questions
+  const fakeQuestions: GREQuestion[] = Array.from({ length: 167 }, (_, idx) =>
+    makeQ({ _id: `np-${idx + 1}`, section: 'quant-1', content: `Question ${idx + 1}` })
+  );
+
+  const sets = buildTopicPracticeSets('quant-number-properties', fakeQuestions);
+  assert.equal(sets.length, 9, '167 questions should produce 9 sets of 20 (last set has 7)');
+  assert.equal(sets[0].setNumber, 1);
+  assert.equal(sets[0].startIndex, 1);
+  assert.equal(sets[0].endIndex, 20);
+  assert.equal(sets[0].questions.length, 20);
+  assert.equal(sets[0].setId, 'topic-set::quant-number-properties::set-1');
+
+  assert.equal(sets[8].setNumber, 9);
+  assert.equal(sets[8].startIndex, 161);
+  assert.equal(sets[8].endIndex, 167);
+  assert.equal(sets[8].questions.length, 7);
+  assert.equal(sets[8].setId, 'topic-set::quant-number-properties::set-9');
+
+  // Before any attempts, next uncompleted set is Set 1
+  const emptyMap = getTopicSetCompletionMap([]);
+  assert.equal(getNextUncompletedSet(sets, emptyMap)?.setNumber, 1);
+
+  // Complete Set 1 twice (70% then 90%) -> Set 1 completed with best 90%, next uncompleted is Set 2
+  const attempts = [
+    {
+      id: 'att-2',
+      monthId: 'topic-bank',
+      monthLabel: 'All Months',
+      testId: 'topic-set::quant-number-properties::set-1',
+      testTitle: 'Number Properties — Set 1 (Q1–Q20)',
+      mode: 'untimed' as const,
+      sectionFilter: 'quant-number-properties',
+      startedAt: '2026-10-10T10:00:00.000Z',
+      completedAt: '2026-10-10T10:20:00.000Z',
+      totalQuestions: 20,
+      GradableQuestions: 20,
+      correctCount: 18,
+      answeredCount: 20,
+      accuracyPercent: 90,
+      totalTimeMs: 1200000,
+      answers: {},
+      timeSpentByQuestion: {},
+      questionsSnapshot: sets[0].questions,
+    },
+    {
+      id: 'att-1',
+      monthId: 'topic-bank',
+      monthLabel: 'All Months',
+      testId: 'topic-set::quant-number-properties::set-1',
+      testTitle: 'Number Properties — Set 1 (Q1–Q20)',
+      mode: 'untimed' as const,
+      sectionFilter: 'quant-number-properties',
+      startedAt: '2026-10-09T10:00:00.000Z',
+      completedAt: '2026-10-09T10:20:00.000Z',
+      totalQuestions: 20,
+      GradableQuestions: 20,
+      correctCount: 14,
+      answeredCount: 20,
+      accuracyPercent: 70,
+      totalTimeMs: 1200000,
+      answers: {},
+      timeSpentByQuestion: {},
+      questionsSnapshot: sets[0].questions,
+    },
+  ];
+
+  const completionMap = getTopicSetCompletionMap(attempts);
+  const set1Stat = completionMap['topic-set::quant-number-properties::set-1'];
+  assert.ok(set1Stat, 'Set 1 should be marked completed');
+  assert.equal(set1Stat.completedCount, 2);
+  assert.equal(set1Stat.bestAccuracy, 90);
+  assert.equal(set1Stat.lastAttempt.id, 'att-2');
+
+  assert.equal(
+    getNextUncompletedSet(sets, completionMap)?.setNumber,
+    2,
+    'After completing Set 1, next uncompleted set must advance to Set 2'
+  );
+});
+
+

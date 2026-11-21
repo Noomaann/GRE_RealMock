@@ -38813,6 +38813,57 @@ function getNotesForTopic(notes, topicId) {
 function getErrorsForTopic(errorLog, topicId) {
 	return errorLog.filter((e) => e.question && classifyQuestionTopic(e.question).id === topicId).sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
 }
+/**
+* Splits a topic's questions into sequential 20-question practice sets
+* with deterministic IDs (`topic-set::<topicId>::set-<N>`) so completed
+* sets persist cleanly across sessions and highlight green when done.
+*/
+function buildTopicPracticeSets(topicId, questions, setSize = 20) {
+	const safeSize = Math.max(1, setSize);
+	const sets = [];
+	for (let i = 0; i < questions.length; i += safeSize) {
+		const chunk = questions.slice(i, i + safeSize);
+		const setNumber = sets.length + 1;
+		sets.push({
+			setNumber,
+			setId: `topic-set::${topicId}::set-${setNumber}`,
+			startIndex: i + 1,
+			endIndex: i + chunk.length,
+			questions: chunk
+		});
+	}
+	return sets;
+}
+/**
+* Aggregates completed practice set attempts keyed by deterministic `setId`.
+* Attempts are ordered newest-first in storage, so the first seen entry is `lastAttempt`.
+*/
+function getTopicSetCompletionMap(attempts) {
+	const map = {};
+	for (const att of attempts) {
+		if (!att.testId || !att.testId.startsWith("topic-set::")) continue;
+		const existing = map[att.testId];
+		if (!existing) map[att.testId] = {
+			completedCount: 1,
+			bestAccuracy: att.accuracyPercent,
+			lastAttempt: att
+		};
+		else {
+			existing.completedCount += 1;
+			if (att.accuracyPercent > existing.bestAccuracy) existing.bestAccuracy = att.accuracyPercent;
+			if ((att.completedAt || "") > (existing.lastAttempt.completedAt || "")) existing.lastAttempt = att;
+		}
+	}
+	return map;
+}
+/**
+* Returns the first uncompleted practice set in order (Set 1 -> Set 2 -> ...),
+* falling back to Set 1 if all sets have already been completed.
+*/
+function getNextUncompletedSet(sets, completionMap) {
+	if (sets.length === 0) return null;
+	return sets.find((s) => !completionMap[s.setId]) || sets[0];
+}
 // src/utils/storage.ts
 var KEYS = {
 	ERROR_LOG: "gre_studio_error_log_v1",
@@ -39512,6 +39563,26 @@ var History = createLucideIcon("history", [
 	["path", {
 		d: "M12 7v5l4 2",
 		key: "1fdv2h"
+	}]
+]);
+/**
+* @license lucide-react v0.546.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Layers = createLucideIcon("layers", [
+	["path", {
+		d: "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z",
+		key: "zw3jo"
+	}],
+	["path", {
+		d: "M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12",
+		key: "1wduqc"
+	}],
+	["path", {
+		d: "M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17",
+		key: "kqbvx6"
 	}]
 ]);
 /**
@@ -44374,14 +44445,14 @@ var QUANT_PILLARS = [
 ];
 var VERBAL_PILLARS = ["Text Completion & Sentence Equivalence", "Reading Comprehension & Critical Reasoning"];
 var PAGE_SIZE = 20;
-var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, onStartSession, onInspectAttempt, onSaveTopicNote, onSaveQuestionNote, onDeleteNote, onUpdateErrorEntry, onRemoveErrorEntry, onExportBackup, onImportBackup, onImportCustomMonthFile }) => {
+var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, selectedCategoryId, onSelectCategoryId, onStartSession, onInspectAttempt, onSaveTopicNote, onSaveQuestionNote, onDeleteNote, onUpdateErrorEntry, onRemoveErrorEntry, onExportBackup, onImportBackup, onImportCustomMonthFile }) => {
 	const [activeDomain, setActiveDomain] = (0, import_react.useState)("quant");
 	const [globalMonth, setGlobalMonth] = (0, import_react.useState)("all");
 	const [globalDifficulty, setGlobalDifficulty] = (0, import_react.useState)("all");
 	const [deduplicate, setDeduplicate] = (0, import_react.useState)(false);
 	const [notesDrawerTopicId, setNotesDrawerTopicId] = (0, import_react.useState)(null);
-	const [selectedCategoryId, setSelectedCategoryId] = (0, import_react.useState)(null);
-	const [explorerTab, setExplorerTab] = (0, import_react.useState)("questions");
+	const [explorerTab, setExplorerTab] = (0, import_react.useState)("sets");
+	const [setStatusFilter, setSetStatusFilter] = (0, import_react.useState)("all");
 	const [explorerFormat, setExplorerFormat] = (0, import_react.useState)("all");
 	const [explorerPool, setExplorerPool] = (0, import_react.useState)("all");
 	const [explorerSearch, setExplorerSearch] = (0, import_react.useState)("");
@@ -44486,6 +44557,15 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 		}
 		return map;
 	}, [filteredPool]);
+	const setCompletionMap = (0, import_react.useMemo)(() => getTopicSetCompletionMap(attempts), [attempts]);
+	const setsByCategoryId = (0, import_react.useMemo)(() => {
+		const map = {};
+		for (const cat of TOPIC_CATEGORIES) {
+			const qs = (itemsByCategoryId[cat.id] || []).map((i) => i.question);
+			map[cat.id] = buildTopicPracticeSets(cat.id, qs, 20);
+		}
+		return map;
+	}, [itemsByCategoryId]);
 	const domainCounts = (0, import_react.useMemo)(() => {
 		let quant = 0;
 		let verbal = 0;
@@ -44555,6 +44635,26 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 			alwaysShowAnswers: mode === "untimed" && alwaysShowAnswers
 		});
 	};
+	const launchPracticeSet = (cat, set, mode, alwaysShowAnswers = false) => {
+		if (set.questions.length === 0) return;
+		onSelectCategoryId(cat.id);
+		const minutesPerQ = cat.domain === "awa" ? 30 : cat.domain === "quant" ? 1.75 : 1.5;
+		const estMinutes = Math.max(10, Math.round(set.questions.length * minutesPerQ));
+		onStartSession({
+			title: `${cat.name} — Set ${set.setNumber}`,
+			subtitle: `${cat.pillar} · Q${set.startIndex}–Q${set.endIndex} (${set.questions.length} Qs)`,
+			monthId: globalMonth === "all" ? "topic-bank" : globalMonth,
+			monthLabel: globalMonth === "all" ? "All Months" : MONTH_CONFIGS.find((m) => m.id === globalMonth)?.label || globalMonth,
+			testId: set.setId,
+			testTitle: `${cat.name} — Set ${set.setNumber} (Q${set.startIndex}–Q${set.endIndex})`,
+			mode,
+			timeLimitMinutes: mode === "timed" ? estMinutes : 0,
+			sectionFilter: cat.id,
+			questions: set.questions,
+			instantFeedbackAllowed: mode === "untimed",
+			alwaysShowAnswers: mode === "untimed" && alwaysShowAnswers
+		});
+	};
 	const launchSingleQuestionPractice = (q, title) => {
 		onStartSession({
 			title: `Note Review: ${title}`,
@@ -44571,9 +44671,10 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 			alwaysShowAnswers: false
 		});
 	};
-	const openCategoryExplorer = (catId, initialTab = "questions") => {
-		setSelectedCategoryId(catId);
+	const openCategoryExplorer = (catId, initialTab = "sets") => {
+		onSelectCategoryId(catId);
 		setExplorerTab(initialTab);
+		setSetStatusFilter("all");
 		setExplorerFormat("all");
 		setExplorerPool("all");
 		setExplorerSearch("");
@@ -44643,7 +44744,16 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 	};
 	if (selectedCategory) {
 		const questionsForLaunch = explorerItems.map((i) => i.question);
-		const activeLimit = sessionLength === 0 ? questionsForLaunch.length : sessionLength;
+		const topicSets = setsByCategoryId[selectedCategory.id] || [];
+		const completedSetsCount = topicSets.filter((s) => Boolean(setCompletionMap[s.setId])).length;
+		const nextUncompletedSet = getNextUncompletedSet(topicSets, setCompletionMap);
+		const filteredTopicSets = topicSets.filter((s) => {
+			const done = Boolean(setCompletionMap[s.setId]);
+			if (setStatusFilter === "completed") return done;
+			if (setStatusFilter === "remaining") return !done;
+			return true;
+		});
+		const progressPct = topicSets.length > 0 ? Math.round(completedSetsCount / topicSets.length * 100) : 0;
 		const topicErrors = errorsByTopicId[selectedCategory.id] || [];
 		const topicNotes = notesByTopicId[selectedCategory.id] || [];
 		const isRcSingle = selectedCategory.id === "verbal-rc-single";
@@ -44660,7 +44770,7 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 										type: "button",
-										onClick: () => setSelectedCategoryId(null),
+										onClick: () => onSelectCategoryId(null),
 										className: "inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E3A5F] dark:text-blue-400 hover:underline",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "w-3.5 h-3.5" }), "Back to Topic Syllabus"]
 									}),
@@ -44682,8 +44792,26 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 												className: "font-mono-tabular font-semibold text-slate-800 dark:text-slate-200",
-												children: [explorerItems.length, " Matching Questions"]
+												children: [
+													explorerItems.length,
+													" Questions · ",
+													topicSets.length,
+													" Sets of ",
+													20
+												]
 											}),
+											completedSetsCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												"aria-hidden": "true",
+												children: "·"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "font-mono-tabular font-semibold text-emerald-700 dark:text-emerald-400",
+												children: [
+													completedSetsCount,
+													" / ",
+													topicSets.length,
+													" Sets Completed"
+												]
+											})] }),
 											isRcSingle && totalRcSingleUnfiltered > 250 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 												"aria-hidden": "true",
 												children: "·"
@@ -44713,78 +44841,98 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 										type: "button",
-										disabled: questionsForLaunch.length === 0,
-										onClick: () => launchCategorySession(selectedCategory, questionsForLaunch, "untimed", false, activeLimit),
+										disabled: !nextUncompletedSet,
+										onClick: () => nextUncompletedSet && launchPracticeSet(selectedCategory, nextUncompletedSet, "untimed", false),
 										className: "inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-[#F3F1EC] dark:bg-[#0E1117] hover:bg-[#E7E4DC] dark:hover:bg-slate-800 border border-[#D8D5CC] dark:border-[#2A3240] text-slate-900 dark:text-white disabled:opacity-40 transition-colors whitespace-nowrap",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "w-3.5 h-3.5 text-[#1E3A5F] dark:text-blue-400" }),
-											"Practice Untimed (",
-											Math.min(activeLimit, questionsForLaunch.length),
-											")"
-										]
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "w-3.5 h-3.5 text-[#1E3A5F] dark:text-blue-400" }), nextUncompletedSet ? `Start Set ${nextUncompletedSet.setNumber} (${nextUncompletedSet.questions.length} Qs)` : "Practice Untimed"]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 										type: "button",
-										disabled: questionsForLaunch.length === 0,
-										onClick: () => launchCategorySession(selectedCategory, questionsForLaunch, "timed", false, activeLimit),
+										disabled: !nextUncompletedSet,
+										onClick: () => nextUncompletedSet && launchPracticeSet(selectedCategory, nextUncompletedSet, "timed", false),
 										className: "inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-[#1E3A5F] hover:bg-[#162C49] dark:bg-blue-600 dark:hover:bg-blue-500 text-white disabled:opacity-40 transition-colors whitespace-nowrap",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "w-3.5 h-3.5" }),
-											"Timed Drill (",
-											Math.min(activeLimit, questionsForLaunch.length),
-											")"
-										]
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "w-3.5 h-3.5" }), nextUncompletedSet ? `Timed Set ${nextUncompletedSet.setNumber}` : "Timed Drill"]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 										type: "button",
-										disabled: questionsForLaunch.length === 0,
-										onClick: () => launchCategorySession(selectedCategory, questionsForLaunch, "untimed", true, activeLimit),
+										disabled: !nextUncompletedSet,
+										onClick: () => nextUncompletedSet && launchPracticeSet(selectedCategory, nextUncompletedSet, "untimed", true),
 										className: "inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-700 hover:bg-emerald-600 text-white disabled:opacity-40 transition-colors whitespace-nowrap",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpenCheck, { className: "w-3.5 h-3.5" }), "Study Key Mode"]
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpenCheck, { className: "w-3.5 h-3.5" }), "Study Key"]
 									})
 								]
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "pt-4 border-t border-[#E4E2DC] dark:border-[#262D38] flex flex-wrap items-center justify-between gap-3",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "flex items-center gap-1 p-1 rounded-lg bg-[#F3F1EC] dark:bg-[#0E1117]",
-								children: [
-									{
-										id: "questions",
-										label: `Questions (${explorerItems.length})`
-									},
-									{
-										id: "errors",
-										label: `Topic Error Log (${topicErrors.length})`
-									},
-									{
-										id: "notes",
-										label: `Revision Notes (${topicNotes.length})`
-									}
-								].map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: () => setExplorerTab(t.id),
-									className: `px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap ${explorerTab === t.id ? "bg-[#1E3A5F] dark:bg-blue-600 text-white" : "text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"}`,
-									children: t.label
-								}, t.id))
-							}), explorerTab === "questions" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "text-xs text-slate-500 dark:text-slate-400",
-								children: [
-									"Use ",
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-slate-700 dark:text-slate-300",
-										children: "Note"
-									}),
-									" or",
-									" ",
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-slate-700 dark:text-slate-300",
-										children: "Log Error"
-									}),
-									" on any row to build your revision sheet directly."
-								]
-							})]
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex items-center gap-1 p-1 rounded-lg bg-[#F3F1EC] dark:bg-[#0E1117] overflow-x-auto",
+									children: [
+										{
+											id: "sets",
+											label: `Practice Sets (${topicSets.length})`
+										},
+										{
+											id: "questions",
+											label: `All Questions (${explorerItems.length})`
+										},
+										{
+											id: "errors",
+											label: `Topic Error Log (${topicErrors.length})`
+										},
+										{
+											id: "notes",
+											label: `Revision Notes (${topicNotes.length})`
+										}
+									].map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: () => setExplorerTab(t.id),
+										className: `px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${explorerTab === t.id ? "bg-[#1E3A5F] dark:bg-blue-600 text-white" : "text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white"}`,
+										children: t.label
+									}, t.id))
+								}),
+								explorerTab === "sets" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex items-center gap-3",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-2 text-xs font-mono-tabular text-slate-600 dark:text-slate-400",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-semibold text-emerald-700 dark:text-emerald-400",
+											children: [
+												completedSetsCount,
+												"/",
+												topicSets.length,
+												" Done (",
+												progressPct,
+												"%)"
+											]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "w-24 h-1.5 rounded-full bg-[#E4E2DC] dark:bg-slate-800 overflow-hidden",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "h-full bg-emerald-600 dark:bg-emerald-500 transition-all",
+												style: { width: `${progressPct}%` }
+											})
+										})]
+									})
+								}),
+								explorerTab === "questions" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "text-xs text-slate-500 dark:text-slate-400",
+									children: [
+										"Use ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-semibold text-slate-700 dark:text-slate-300",
+											children: "Note"
+										}),
+										" or",
+										" ",
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-semibold text-slate-700 dark:text-slate-300",
+											children: "Log Error"
+										}),
+										" on any row to build your revision sheet directly."
+									]
+								})
+							]
 						}),
 						explorerTab === "questions" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3",
@@ -44915,6 +45063,162 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 							]
 						})
 					]
+				}),
+				explorerTab === "sets" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+					className: "space-y-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-wrap items-center justify-between gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex items-center gap-1 p-1 rounded-lg bg-white dark:bg-[#161B22] border border-[#E4E2DC] dark:border-[#262D38]",
+							children: [
+								{
+									id: "all",
+									label: `All Sets (${topicSets.length})`
+								},
+								{
+									id: "remaining",
+									label: `Remaining (${topicSets.length - completedSetsCount})`
+								},
+								{
+									id: "completed",
+									label: `Completed (${completedSetsCount})`
+								}
+							].map((tab) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setSetStatusFilter(tab.id),
+								className: `px-3 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap ${setStatusFilter === tab.id ? "bg-[#1E3A5F] dark:bg-blue-600 text-white" : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"}`,
+								children: tab.label
+							}, tab.id))
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-xs text-slate-500 dark:text-slate-400",
+							children: [
+								"Each set holds up to ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-mono-tabular font-semibold",
+									children: 20
+								}),
+								" questions · Finished sets turn green automatically"
+							]
+						})]
+					}), filteredTopicSets.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "bg-white dark:bg-[#161B22] border border-[#E4E2DC] dark:border-[#262D38] rounded-xl p-10 text-center space-y-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "text-sm font-bold text-slate-900 dark:text-white",
+							children: setStatusFilter === "completed" ? "No Completed Sets Yet" : setStatusFilter === "remaining" ? "All Sets Completed!" : "No Questions Available in Current Filter"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs text-slate-500 dark:text-slate-400",
+							children: setStatusFilter === "completed" ? "Finish any 20-question set and submit to mark it green here." : setStatusFilter === "remaining" ? "Great work — every practice set in this chapter is completed." : "Try resetting Month or Difficulty filters."
+						})]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4",
+						children: filteredTopicSets.map((set) => {
+							const completion = setCompletionMap[set.setId];
+							const isCompleted = Boolean(completion);
+							const isNextUp = !isCompleted && nextUncompletedSet?.setId === set.setId;
+							let easy = 0;
+							let med = 0;
+							let hard = 0;
+							for (const q of set.questions) {
+								const d = q.difficulty || 3;
+								if (d <= 2) easy++;
+								else if (d === 3) med++;
+								else hard++;
+							}
+							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
+								"data-set-number": set.setNumber,
+								"data-completed": isCompleted ? "true" : "false",
+								className: `rounded-xl p-5 flex flex-col justify-between gap-4 border transition-colors ${isCompleted ? "bg-emerald-50/90 dark:bg-emerald-950/35 border-emerald-500/75 dark:border-emerald-500/55" : isNextUp ? "bg-white dark:bg-[#161B22] border-[#1E3A5F]/65 dark:border-blue-500/65" : "bg-white dark:bg-[#161B22] border-[#E4E2DC] dark:border-[#262D38] hover:border-[#1E3A5F]/45 dark:hover:border-blue-500/45"}`,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-2",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center justify-between gap-2 text-xs",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: `font-semibold inline-flex items-center gap-1.5 ${isCompleted ? "text-emerald-800 dark:text-emerald-300" : isNextUp ? "text-[#1E3A5F] dark:text-blue-400" : "text-slate-500 dark:text-slate-400"}`,
+												children: isCompleted ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" }), "Completed"] }) : isNextUp ? "Next Up" : `Practice Set`
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "font-mono-tabular font-bold text-slate-800 dark:text-slate-200",
+												children: [set.questions.length, " Qs"]
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-baseline justify-between gap-2",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h3", {
+												className: `text-lg font-bold tracking-tight ${isCompleted ? "text-emerald-950 dark:text-emerald-100" : "text-slate-900 dark:text-white"}`,
+												children: ["Set ", set.setNumber]
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "text-xs font-mono-tabular text-slate-600 dark:text-slate-400",
+												children: [
+													"Q",
+													set.startIndex,
+													" – Q",
+													set.endIndex
+												]
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex flex-wrap items-center gap-1.5 text-[11px] font-mono-tabular text-slate-600 dark:text-slate-400",
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Easy ", easy] }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													"aria-hidden": "true",
+													children: "·"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Med ", med] }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+													"aria-hidden": "true",
+													children: "·"
+												}),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Hard ", hard] })
+											]
+										}),
+										completion && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "pt-2 border-t border-emerald-500/30 flex items-center justify-between text-xs",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "font-mono-tabular font-bold text-emerald-800 dark:text-emerald-300",
+												children: [
+													"Best: ",
+													completion.bestAccuracy,
+													"% (",
+													completion.completedCount,
+													"x)"
+												]
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+												type: "button",
+												onClick: () => onInspectAttempt(completion.lastAttempt),
+												className: "inline-flex items-center gap-1 text-emerald-800 dark:text-emerald-300 hover:underline font-semibold",
+												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RotateCcw, { className: "w-3 h-3" }), " Review Last"]
+											})]
+										})
+									]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: `pt-3.5 border-t flex items-center gap-1.5 ${isCompleted ? "border-emerald-500/30" : "border-[#E4E2DC] dark:border-[#262D38]"}`,
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+											type: "button",
+											onClick: () => launchPracticeSet(selectedCategory, set, "untimed", false),
+											className: `flex-1 inline-flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg text-xs font-semibold border transition-colors whitespace-nowrap ${isCompleted ? "bg-white/90 dark:bg-[#0E1117]/80 hover:bg-white border-emerald-600/35 text-emerald-900 dark:text-emerald-200" : "bg-[#F3F1EC] dark:bg-[#0E1117] hover:bg-[#E7E4DC] dark:hover:bg-slate-800 border-[#D8D5CC] dark:border-[#2A3240] text-slate-900 dark:text-white"}`,
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "w-3 h-3" }), isCompleted ? "Redo" : "Untimed"]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+											type: "button",
+											onClick: () => launchPracticeSet(selectedCategory, set, "timed", false),
+											className: `flex-1 inline-flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${isCompleted ? "bg-emerald-700 hover:bg-emerald-600 text-white" : "bg-[#1E3A5F] hover:bg-[#162C49] dark:bg-blue-600 dark:hover:bg-blue-500 text-white"}`,
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "w-3 h-3" }), "Timed"]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: () => launchPracticeSet(selectedCategory, set, "untimed", true),
+											className: "inline-flex items-center justify-center p-2 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-600/35 text-emerald-800 dark:text-emerald-300 transition-colors shrink-0",
+											title: `Study Set ${set.setNumber} with Official Answer Keys`,
+											"aria-label": `Study Answer Key for Set ${set.setNumber}`,
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpenCheck, { className: "w-3.5 h-3.5" })
+										})
+									]
+								})]
+							}, set.setId);
+						})
+					})]
 				}),
 				explorerTab === "errors" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
 					className: "bg-white dark:bg-[#161B22] border border-[#E4E2DC] dark:border-[#262D38] rounded-xl p-5 lg:p-6",
@@ -45219,6 +45523,9 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 				className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4",
 				children: cats.map((cat) => {
 					const questions = (itemsByCategoryId[cat.id] || []).map((i) => i.question);
+					const topicSets = setsByCategoryId[cat.id] || [];
+					const completedSetsCount = topicSets.filter((s) => Boolean(setCompletionMap[s.setId])).length;
+					const nextSet = getNextUncompletedSet(topicSets, setCompletionMap);
 					let easy = 0;
 					let med = 0;
 					let hard = 0;
@@ -45233,8 +45540,9 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 					const mastery = masteryByCategory[cat.id];
 					const masteryPct = mastery && mastery.answered > 0 ? Math.round(mastery.correct / mastery.answered * 100) : null;
 					const isRcSingle = cat.id === "verbal-rc-single";
+					const allSetsDone = topicSets.length > 0 && completedSetsCount === topicSets.length;
 					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-						className: "bg-white dark:bg-[#161B22] border border-[#E4E2DC] dark:border-[#262D38] rounded-xl p-5 flex flex-col justify-between gap-4 hover:border-[#1E3A5F]/50 dark:hover:border-blue-500/50 transition-colors",
+						className: `rounded-xl p-5 flex flex-col justify-between gap-4 border transition-colors ${allSetsDone ? "bg-emerald-50/70 dark:bg-emerald-950/25 border-emerald-500/65" : "bg-white dark:bg-[#161B22] border-[#E4E2DC] dark:border-[#262D38] hover:border-[#1E3A5F]/50 dark:hover:border-blue-500/50"}`,
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "space-y-2",
 							children: [
@@ -45264,7 +45572,12 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
 									className: "text-base font-bold text-slate-900 dark:text-white leading-snug",
-									children: cat.name
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: () => openCategoryExplorer(cat.id, "sets"),
+										className: "text-left hover:text-[#1E3A5F] dark:hover:text-blue-400 transition-colors",
+										children: cat.name
+									})
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 									className: "text-xs text-slate-600 dark:text-slate-400 leading-relaxed",
@@ -45283,6 +45596,14 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "flex flex-wrap items-center gap-1.5 text-[11px] font-mono-tabular text-slate-500 dark:text-slate-400 pt-1",
 									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: completedSetsCount > 0 ? "text-emerald-700 dark:text-emerald-400 font-semibold" : "text-slate-700 dark:text-slate-300 font-semibold",
+											children: completedSetsCount > 0 ? `${completedSetsCount}/${topicSets.length} Sets Done` : `${topicSets.length} Sets`
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											children: "·"
+										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["Easy ", easy] }),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 											"aria-hidden": "true",
@@ -45327,30 +45648,37 @@ var TopicBankView = ({ allTestsByMonth, bookmarks, errorLog, notes, attempts, on
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 									type: "button",
 									disabled: questions.length === 0,
-									onClick: () => openCategoryExplorer(cat.id, "questions"),
+									onClick: () => openCategoryExplorer(cat.id, "sets"),
 									className: "flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg text-xs font-semibold bg-[#F3F1EC] dark:bg-[#0E1117] hover:bg-[#E7E4DC] dark:hover:bg-slate-800 border border-[#D8D5CC] dark:border-[#2A3240] text-slate-900 dark:text-white disabled:opacity-40 transition-colors whitespace-nowrap",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FolderOpen, { className: "w-3.5 h-3.5 text-[#1E3A5F] dark:text-blue-400" }), "Browse"]
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layers, { className: "w-3.5 h-3.5 text-[#1E3A5F] dark:text-blue-400" }),
+										"Sets (",
+										topicSets.length,
+										")"
+									]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 									type: "button",
-									disabled: questions.length === 0,
-									onClick: () => launchCategorySession(cat, questions, "untimed", false, 20),
+									disabled: !nextSet,
+									onClick: () => nextSet && launchPracticeSet(cat, nextSet, "untimed", false),
 									className: "flex-1 inline-flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg text-xs font-semibold bg-white dark:bg-[#161B22] hover:bg-[#F7F6F2] dark:hover:bg-slate-800 border border-[#D8D5CC] dark:border-[#2A3240] text-slate-800 dark:text-slate-200 disabled:opacity-40 transition-colors whitespace-nowrap",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "w-3 h-3 text-[#1E3A5F] dark:text-blue-400" }), "Drill"]
+									title: nextSet ? `Start Set ${nextSet.setNumber} (Q${nextSet.startIndex}–Q${nextSet.endIndex}) Untimed` : void 0,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "w-3 h-3 text-[#1E3A5F] dark:text-blue-400" }), nextSet ? `Set ${nextSet.setNumber}` : "Drill"]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 									type: "button",
-									disabled: questions.length === 0,
-									onClick: () => launchCategorySession(cat, questions, "timed", false, 20),
+									disabled: !nextSet,
+									onClick: () => nextSet && launchPracticeSet(cat, nextSet, "timed", false),
 									className: "flex-1 inline-flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg text-xs font-semibold bg-[#1E3A5F] hover:bg-[#162C49] dark:bg-blue-600 dark:hover:bg-blue-500 text-white disabled:opacity-40 transition-colors whitespace-nowrap",
+									title: nextSet ? `Start Set ${nextSet.setNumber} (Q${nextSet.startIndex}–Q${nextSet.endIndex}) Timed` : void 0,
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "w-3 h-3" }), "Timed"]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 									type: "button",
-									disabled: questions.length === 0,
-									onClick: () => launchCategorySession(cat, questions, "untimed", true, 20),
+									disabled: !nextSet,
+									onClick: () => nextSet && launchPracticeSet(cat, nextSet, "untimed", true),
 									className: "inline-flex items-center justify-center p-2 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border border-emerald-600/30 text-emerald-800 dark:text-emerald-300 disabled:opacity-40 transition-colors shrink-0",
-									title: `Study ${cat.name} with Official Answer Keys Visible`,
+									title: nextSet ? `Study Set ${nextSet.setNumber} with Official Answer Keys Visible` : `Study ${cat.name}`,
 									"aria-label": `Study Answer Key for ${cat.name}`,
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpenCheck, { className: "w-3.5 h-3.5" })
 								})
@@ -45808,6 +46136,7 @@ function App() {
 	const [launchModalTarget, setLaunchModalTarget] = (0, import_react.useState)(null);
 	const [activeSession, setActiveSession] = (0, import_react.useState)(null);
 	const [inspectingAttempt, setInspectingAttempt] = (0, import_react.useState)(null);
+	const [selectedTopicId, setSelectedTopicId] = (0, import_react.useState)(null);
 	const [showFileGuideModal, setShowFileGuideModal] = (0, import_react.useState)(false);
 	(0, import_react.useEffect)(() => {
 		const root = document.documentElement;
@@ -46203,6 +46532,8 @@ function App() {
 				errorLog,
 				notes,
 				attempts,
+				selectedCategoryId: selectedTopicId,
+				onSelectCategoryId: setSelectedTopicId,
 				onStartSession: (cfg) => setActiveSession(cfg),
 				onInspectAttempt: (att) => setInspectingAttempt(att),
 				onSaveTopicNote: (params) => setNotes(upsertTopicNote(params)),
@@ -47456,6 +47787,10 @@ function App() {
     height: calc(var(--spacing) * .5);
   }
 
+  .h-1\.5 {
+    height: calc(var(--spacing) * 1.5);
+  }
+
   .h-2 {
     height: calc(var(--spacing) * 2);
   }
@@ -48013,6 +48348,10 @@ function App() {
     border-color: #1e3a5f;
   }
 
+  .border-\[\#1E3A5F\]\/65 {
+    border-color: oklab(34.6182% -.0177443 -.0713795 / .65);
+  }
+
   .border-\[\#D8D5CC\] {
     border-color: #d8d5cc;
   }
@@ -48075,6 +48414,16 @@ function App() {
     border-color: var(--color-emerald-500);
   }
 
+  .border-emerald-500\/30 {
+    border-color: #00bb7f4d;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-emerald-500\/30 {
+      border-color: color-mix(in oklab, var(--color-emerald-500) 30%, transparent);
+    }
+  }
+
   .border-emerald-500\/50 {
     border-color: #00bb7f80;
   }
@@ -48082,6 +48431,26 @@ function App() {
   @supports (color: color-mix(in lab, red, red)) {
     .border-emerald-500\/50 {
       border-color: color-mix(in oklab, var(--color-emerald-500) 50%, transparent);
+    }
+  }
+
+  .border-emerald-500\/65 {
+    border-color: #00bb7fa6;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-emerald-500\/65 {
+      border-color: color-mix(in oklab, var(--color-emerald-500) 65%, transparent);
+    }
+  }
+
+  .border-emerald-500\/75 {
+    border-color: #00bb7fbf;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .border-emerald-500\/75 {
+      border-color: color-mix(in oklab, var(--color-emerald-500) 75%, transparent);
     }
   }
 
@@ -48313,6 +48682,10 @@ function App() {
     background-color: #14243b;
   }
 
+  .bg-\[\#E4E2DC\] {
+    background-color: #e4e2dc;
+  }
+
   .bg-\[\#EAE7DF\] {
     background-color: #eae7df;
   }
@@ -48380,6 +48753,16 @@ function App() {
   @supports (color: color-mix(in lab, red, red)) {
     .bg-emerald-50\/45 {
       background-color: color-mix(in oklab, var(--color-emerald-50) 45%, transparent);
+    }
+  }
+
+  .bg-emerald-50\/70 {
+    background-color: #ecfdf5b3;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-emerald-50\/70 {
+      background-color: color-mix(in oklab, var(--color-emerald-50) 70%, transparent);
     }
   }
 
@@ -48705,6 +49088,16 @@ function App() {
     }
   }
 
+  .bg-white\/90 {
+    background-color: #ffffffe6;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-white\/90 {
+      background-color: color-mix(in oklab, var(--color-white) 90%, transparent);
+    }
+  }
+
   .p-1 {
     padding: var(--spacing);
   }
@@ -48743,6 +49136,10 @@ function App() {
 
   .p-8 {
     padding: calc(var(--spacing) * 8);
+  }
+
+  .p-10 {
+    padding: calc(var(--spacing) * 10);
   }
 
   .p-12 {
@@ -49395,6 +49792,12 @@ function App() {
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
 
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+
   .transition-colors {
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -49422,6 +49825,10 @@ function App() {
       --tw-scale-y: 105%;
       --tw-scale-z: 105%;
       scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+
+    .hover\:border-\[\#1E3A5F\]\/45:hover {
+      border-color: oklab(34.6182% -.0177443 -.0713795 / .45);
     }
 
     .hover\:border-\[\#1E3A5F\]\/50:hover {
@@ -49558,6 +49965,10 @@ function App() {
       background-color: var(--color-slate-800);
     }
 
+    .hover\:bg-white:hover {
+      background-color: var(--color-white);
+    }
+
     .hover\:bg-white\/10:hover {
       background-color: #ffffff1a;
     }
@@ -49576,6 +49987,10 @@ function App() {
       .hover\:bg-white\/15:hover {
         background-color: color-mix(in oklab, var(--color-white) 15%, transparent);
       }
+    }
+
+    .hover\:text-\[\#1E3A5F\]:hover {
+      color: #1e3a5f;
     }
 
     .hover\:text-rose-600:hover {
@@ -49644,10 +50059,6 @@ function App() {
 
   .focus-visible\:ring-\[\#1E3A5F\]:focus-visible {
     --tw-ring-color: #1e3a5f;
-  }
-
-  .disabled\:opacity-35:disabled {
-    opacity: .35;
   }
 
   .disabled\:opacity-40:disabled {
@@ -49886,12 +50297,32 @@ function App() {
     border-color: var(--color-blue-500);
   }
 
+  .dark\:border-blue-500\/65:where(.dark, .dark *) {
+    border-color: #3080ffa6;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .dark\:border-blue-500\/65:where(.dark, .dark *) {
+      border-color: color-mix(in oklab, var(--color-blue-500) 65%, transparent);
+    }
+  }
+
   .dark\:border-blue-600:where(.dark, .dark *) {
     border-color: var(--color-blue-600);
   }
 
   .dark\:border-emerald-500:where(.dark, .dark *) {
     border-color: var(--color-emerald-500);
+  }
+
+  .dark\:border-emerald-500\/55:where(.dark, .dark *) {
+    border-color: #00bb7f8c;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .dark\:border-emerald-500\/55:where(.dark, .dark *) {
+      border-color: color-mix(in oklab, var(--color-emerald-500) 55%, transparent);
+    }
   }
 
   .dark\:border-rose-500:where(.dark, .dark *) {
@@ -49920,6 +50351,10 @@ function App() {
 
   .dark\:bg-\[\#0E1117\]\/70:where(.dark, .dark *) {
     background-color: oklab(17.7288% -.00136057 -.0132787 / .7);
+  }
+
+  .dark\:bg-\[\#0E1117\]\/80:where(.dark, .dark *) {
+    background-color: oklab(17.7288% -.00136057 -.0132787 / .8);
   }
 
   .dark\:bg-\[\#1C222B\]:where(.dark, .dark *) {
@@ -49964,6 +50399,10 @@ function App() {
     }
   }
 
+  .dark\:bg-emerald-500:where(.dark, .dark *) {
+    background-color: var(--color-emerald-500);
+  }
+
   .dark\:bg-emerald-600:where(.dark, .dark *) {
     background-color: var(--color-emerald-600);
   }
@@ -49985,6 +50424,16 @@ function App() {
   @supports (color: color-mix(in lab, red, red)) {
     .dark\:bg-emerald-950\/20:where(.dark, .dark *) {
       background-color: color-mix(in oklab, var(--color-emerald-950) 20%, transparent);
+    }
+  }
+
+  .dark\:bg-emerald-950\/25:where(.dark, .dark *) {
+    background-color: #002c2240;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .dark\:bg-emerald-950\/25:where(.dark, .dark *) {
+      background-color: color-mix(in oklab, var(--color-emerald-950) 25%, transparent);
     }
   }
 
@@ -50015,6 +50464,16 @@ function App() {
   @supports (color: color-mix(in lab, red, red)) {
     .dark\:bg-emerald-950\/40:where(.dark, .dark *) {
       background-color: color-mix(in oklab, var(--color-emerald-950) 40%, transparent);
+    }
+  }
+
+  .dark\:bg-emerald-950\/50:where(.dark, .dark *) {
+    background-color: #002c2280;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .dark\:bg-emerald-950\/50:where(.dark, .dark *) {
+      background-color: color-mix(in oklab, var(--color-emerald-950) 50%, transparent);
     }
   }
 
@@ -50229,6 +50688,16 @@ function App() {
   }
 
   @media (hover: hover) {
+    .dark\:hover\:border-blue-500\/45:where(.dark, .dark *):hover {
+      border-color: #3080ff73;
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      .dark\:hover\:border-blue-500\/45:where(.dark, .dark *):hover {
+        border-color: color-mix(in oklab, var(--color-blue-500) 45%, transparent);
+      }
+    }
+
     .dark\:hover\:border-blue-500\/50:where(.dark, .dark *):hover {
       border-color: #3080ff80;
     }
@@ -50268,6 +50737,16 @@ function App() {
     @supports (color: color-mix(in lab, red, red)) {
       .dark\:hover\:bg-emerald-900\/50:where(.dark, .dark *):hover {
         background-color: color-mix(in oklab, var(--color-emerald-900) 50%, transparent);
+      }
+    }
+
+    .dark\:hover\:bg-emerald-900\/60:where(.dark, .dark *):hover {
+      background-color: #004e3b99;
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      .dark\:hover\:bg-emerald-900\/60:where(.dark, .dark *):hover {
+        background-color: color-mix(in oklab, var(--color-emerald-900) 60%, transparent);
       }
     }
 
@@ -50311,6 +50790,10 @@ function App() {
       .dark\:hover\:bg-slate-800\/40:where(.dark, .dark *):hover {
         background-color: color-mix(in oklab, var(--color-slate-800) 40%, transparent);
       }
+    }
+
+    .dark\:hover\:text-blue-400:where(.dark, .dark *):hover {
+      color: var(--color-blue-400);
     }
 
     .dark\:hover\:text-rose-400:where(.dark, .dark *):hover {

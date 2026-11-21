@@ -81,6 +81,7 @@ export default function App() {
   } | null>(null);
   const [activeSession, setActiveSession] = useState<PracticeSessionConfig | null>(null);
   const [inspectingAttempt, setInspectingAttempt] = useState<TestAttempt | null>(null);
+  const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [showFileGuideModal, setShowFileGuideModal] = useState<boolean>(false);
 
   // Sync dark mode class on <html>
@@ -573,6 +574,8 @@ export default function App() {
           errorLog={errorLog}
           notes={notes}
           attempts={attempts}
+          selectedCategoryId={selectedTopicId}
+          onSelectCategoryId={setSelectedTopicId}
           onStartSession={(cfg) => setActiveSession(cfg)}
           onInspectAttempt={(att) => setInspectingAttempt(att)}
           onSaveTopicNote={(params) => setNotes(upsertTopicNote(params))}

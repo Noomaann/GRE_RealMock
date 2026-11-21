@@ -1,4 +1,4 @@
-import { ErrorLogEntry, GREQuestion, StudyNote } from '../types/gre';
+import { ErrorLogEntry, GREQuestion, StudyNote, TestAttempt } from '../types/gre';
 
 export type TopicDomain = 'quant' | 'verbal' | 'awa';
 
@@ -676,4 +676,89 @@ export function getErrorsForTopic(errorLog: ErrorLogEntry[], topicId: string): E
     .filter((e) => e.question && classifyQuestionTopic(e.question).id === topicId)
     .sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
 }
+
+export const TOPIC_SET_SIZE = 20;
+
+export interface TopicPracticeSet {
+  setNumber: number;
+  setId: string;
+  startIndex: number; // 1-based inclusive
+  endIndex: number; // 1-based inclusive
+  questions: GREQuestion[];
+}
+
+export interface TopicSetCompletion {
+  completedCount: number;
+  bestAccuracy: number;
+  lastAttempt: TestAttempt;
+}
+
+/**
+ * Splits a topic's questions into sequential 20-question practice sets
+ * with deterministic IDs (`topic-set::<topicId>::set-<N>`) so completed
+ * sets persist cleanly across sessions and highlight green when done.
+ */
+export function buildTopicPracticeSets(
+  topicId: string,
+  questions: GREQuestion[],
+  setSize = TOPIC_SET_SIZE
+): TopicPracticeSet[] {
+  const safeSize = Math.max(1, setSize);
+  const sets: TopicPracticeSet[] = [];
+  for (let i = 0; i < questions.length; i += safeSize) {
+    const chunk = questions.slice(i, i + safeSize);
+    const setNumber = sets.length + 1;
+    sets.push({
+      setNumber,
+      setId: `topic-set::${topicId}::set-${setNumber}`,
+      startIndex: i + 1,
+      endIndex: i + chunk.length,
+      questions: chunk,
+    });
+  }
+  return sets;
+}
+
+/**
+ * Aggregates completed practice set attempts keyed by deterministic `setId`.
+ * Attempts are ordered newest-first in storage, so the first seen entry is `lastAttempt`.
+ */
+export function getTopicSetCompletionMap(
+  attempts: TestAttempt[]
+): Record<string, TopicSetCompletion> {
+  const map: Record<string, TopicSetCompletion> = {};
+  for (const att of attempts) {
+    if (!att.testId || !att.testId.startsWith('topic-set::')) continue;
+    const existing = map[att.testId];
+    if (!existing) {
+      map[att.testId] = {
+        completedCount: 1,
+        bestAccuracy: att.accuracyPercent,
+        lastAttempt: att,
+      };
+    } else {
+      existing.completedCount += 1;
+      if (att.accuracyPercent > existing.bestAccuracy) {
+        existing.bestAccuracy = att.accuracyPercent;
+      }
+      if ((att.completedAt || '') > (existing.lastAttempt.completedAt || '')) {
+        existing.lastAttempt = att;
+      }
+    }
+  }
+  return map;
+}
+
+/**
+ * Returns the first uncompleted practice set in order (Set 1 -> Set 2 -> ...),
+ * falling back to Set 1 if all sets have already been completed.
+ */
+export function getNextUncompletedSet(
+  sets: TopicPracticeSet[],
+  completionMap: Record<string, TopicSetCompletion>
+): TopicPracticeSet | null {
+  if (sets.length === 0) return null;
+  return sets.find((s) => !completionMap[s.setId]) || sets[0];
+}
+
 

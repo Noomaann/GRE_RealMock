@@ -169,6 +169,10 @@ export const TestSessionView: React.FC<TestSessionViewProps> = ({
   // Keyboard shortcuts for exam efficiency
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      // Never intercept browser/OS shortcuts like Ctrl+C (copy), Ctrl+A, Cmd+C, etc.
+      if (e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
       const target = e.target as HTMLElement | null;
       if (
         target &&

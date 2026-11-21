@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GREQuestion, UserAnswer } from '../types/gre';
 import {
   classifyQuestionSubType,
@@ -11,7 +11,7 @@ import {
 } from '../utils/greLogic';
 import { RichHtml } from './RichHtml';
 import { RichAnswerSummary } from './RichAnswerSummary';
-import { Check, X, EyeOff, Eye } from 'lucide-react';
+import { Check, Copy, X, EyeOff, Eye } from 'lucide-react';
 
 interface QuestionRendererProps {
   question: GREQuestion;
@@ -28,13 +28,48 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   showSolution = false,
   readOnly = false,
 }) => {
+  const [copiedOptionKey, setCopiedOptionKey] = useState<string | null>(null);
   const currentAns: UserAnswer = answer || { questionId: question._id };
   const subType = classifyQuestionSubType(question);
   const evaluation = evaluateQuestionAnswer(question, currentAns);
+  const isVerbalQuestion = Boolean(question.section && question.section.startsWith('verbal'));
+
+  const hasActiveTextSelection = (): boolean => {
+    if (typeof window === 'undefined' || !window.getSelection) return false;
+    const sel = window.getSelection();
+    return Boolean(sel && !sel.isCollapsed && sel.toString().trim().length > 0);
+  };
+
+  const handleCopyOptionText = (key: string, htmlContent: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const plain = stripHtmlToText(htmlContent).trim();
+    if (!plain) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(plain).catch(() => {});
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = plain;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+      } catch {
+        // ignore fallback failure
+      }
+      document.body.removeChild(ta);
+    }
+    setCopiedOptionKey(key);
+    window.setTimeout(() => {
+      setCopiedOptionKey((cur) => (cur === key ? null : cur));
+    }, 1200);
+  };
 
   // Toggle option selection (single vs multiple)
-  const handleSelectOption = (idx: number) => {
+  const handleSelectOption = (idx: number, fromClick = false) => {
     if (readOnly) return;
+    if (fromClick && hasActiveTextSelection()) return;
     const prev = currentAns.selectedIndices || [];
     let next: number[];
     if (question.singleormultiple) {
@@ -65,8 +100,9 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   };
 
   // Select blank option for fill-blank
-  const handleSelectBlank = (blankIdx: number, optIdx: number) => {
+  const handleSelectBlank = (blankIdx: number, optIdx: number, fromClick = false) => {
     if (readOnly) return;
+    if (fromClick && hasActiveTextSelection()) return;
     const prev = currentAns.blankSelections || {};
     const next = { ...prev };
     if (next[blankIdx] === optIdx) {
@@ -270,18 +306,30 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           return (
             <div
               key={opt._id || idx}
+              data-option-letter={letter}
               className={`group flex items-start gap-3 px-3.5 py-2.5 rounded-lg border transition-colors ${borderAndBg} ${
                 isEliminated && !isSelected ? 'opacity-50' : ''
               }`}
             >
-              <button
-                type="button"
-                disabled={readOnly}
-                onClick={() => handleSelectOption(idx)}
-                className="flex-1 flex items-start gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E3A5F] rounded"
+              <div
+                role="button"
+                tabIndex={readOnly ? -1 : 0}
+                aria-disabled={readOnly}
+                aria-pressed={isSelected}
+                onClick={() => handleSelectOption(idx, true)}
+                onKeyDown={(e) => {
+                  if (readOnly) return;
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleSelectOption(idx);
+                  }
+                }}
+                className={`flex-1 flex items-start gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E3A5F] rounded ${
+                  readOnly ? '' : 'cursor-pointer'
+                }`}
               >
                 <span
-                  className={`mt-0.5 w-6 h-6 shrink-0 flex items-center justify-center text-xs font-mono-tabular font-bold transition-colors ${
+                  className={`mt-0.5 w-6 h-6 shrink-0 select-none flex items-center justify-center text-xs font-mono-tabular font-bold transition-colors ${
                     isMulti ? 'rounded-md' : 'rounded-full'
                   } ${
                     showSolution && isCorrectOption
@@ -297,15 +345,15 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                 </span>
 
                 <div
-                  className={`flex-1 text-[15px] leading-relaxed text-slate-900 dark:text-slate-100 ${
+                  className={`flex-1 select-text cursor-text text-[15px] leading-relaxed text-slate-900 dark:text-slate-100 ${
                     isEliminated && !isSelected ? 'line-through text-slate-400 dark:text-slate-500' : ''
                   }`}
                 >
                   <RichHtml html={opt.content} inline />
                 </div>
-              </button>
+              </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-1.5 shrink-0">
                 {showSolution && isCorrectOption && (
                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                     <Check className="w-3.5 h-3.5" />
@@ -317,6 +365,21 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                     <X className="w-3.5 h-3.5" />
                     Your Choice
                   </span>
+                )}
+                {isVerbalQuestion && (
+                  <button
+                    type="button"
+                    onClick={(e) => handleCopyOptionText(`mcq-${idx}`, opt.content, e)}
+                    className="p-1 text-slate-400 hover:text-[#1E3A5F] dark:hover:text-blue-400 rounded transition-colors"
+                    title="Copy option text"
+                    aria-label={`Copy option ${letter} text`}
+                  >
+                    {copiedOptionKey === `mcq-${idx}` ? (
+                      <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" />
+                    )}
+                  </button>
                 )}
                 {!readOnly && (
                   <button
@@ -448,14 +511,14 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                       key={sentOpt._id || idx}
                       role="button"
                       tabIndex={readOnly ? -1 : 0}
-                      onClick={() => handleSelectOption(idx)}
+                      onClick={() => handleSelectOption(idx, true)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
                           handleSelectOption(idx);
                         }
                       }}
-                      className={highlightClass}
+                      className={`select-text ${highlightClass}`}
                     >
                       {cleanText}{' '}
                     </span>
@@ -627,18 +690,30 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                     return (
                       <div
                         key={optIdx}
+                        data-blank-option={`${bIdx}-${letter}`}
                         className={`group flex items-center justify-between gap-2 px-3 py-2.5 rounded-md border transition-colors ${itemClass} ${
                           isEliminated && !isSelected ? 'opacity-45' : ''
                         }`}
                       >
-                        <button
-                          type="button"
-                          disabled={readOnly}
-                          onClick={() => handleSelectBlank(bIdx, optIdx)}
-                          className="flex-1 flex items-center gap-2.5 text-left focus:outline-none"
+                        <div
+                          role="button"
+                          tabIndex={readOnly ? -1 : 0}
+                          aria-disabled={readOnly}
+                          aria-pressed={isSelected}
+                          onClick={() => handleSelectBlank(bIdx, optIdx, true)}
+                          onKeyDown={(e) => {
+                            if (readOnly) return;
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              handleSelectBlank(bIdx, optIdx);
+                            }
+                          }}
+                          className={`flex-1 flex items-center gap-2.5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E3A5F] rounded ${
+                            readOnly ? '' : 'cursor-pointer'
+                          }`}
                         >
                           <span
-                            className={`w-5 h-5 rounded text-[11px] font-mono-tabular font-bold flex items-center justify-center shrink-0 ${
+                            className={`w-5 h-5 select-none rounded text-[11px] font-mono-tabular font-bold flex items-center justify-center shrink-0 ${
                               showSolution && isCorrect
                                 ? 'bg-emerald-700 text-white'
                                 : showSolution && isSelected && !isCorrect
@@ -651,13 +726,13 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                             {letter}
                           </span>
                           <span
-                            className={`text-sm font-medium text-slate-900 dark:text-slate-100 ${
+                            className={`select-text cursor-text text-sm font-medium text-slate-900 dark:text-slate-100 ${
                               isEliminated && !isSelected ? 'line-through text-slate-400' : ''
                             }`}
                           >
                             <RichHtml html={opt.content} inline />
                           </span>
-                        </button>
+                        </div>
 
                         <div className="flex items-center gap-1 shrink-0">
                           {showSolution && isCorrect && (
@@ -666,6 +741,21 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                           {showSolution && isSelected && !isCorrect && (
                             <X className="w-4 h-4 text-rose-700 dark:text-rose-400" />
                           )}
+                          <button
+                            type="button"
+                            onClick={(e) =>
+                              handleCopyOptionText(`blank-${bIdx}-${optIdx}`, opt.content, e)
+                            }
+                            className="p-1 text-slate-400 hover:text-[#1E3A5F] dark:hover:text-blue-400 rounded transition-colors"
+                            title="Copy word"
+                            aria-label={`Copy choice ${letter}`}
+                          >
+                            {copiedOptionKey === `blank-${bIdx}-${optIdx}` ? (
+                              <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            ) : (
+                              <Copy className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" />
+                            )}
+                          </button>
                           {!readOnly && (
                             <button
                               type="button"

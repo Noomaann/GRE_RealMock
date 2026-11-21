@@ -8,6 +8,7 @@ import {
   TestAttempt,
   UserAnswer,
 } from '../types/gre';
+import { classifyQuestionTopic } from './topicClassifier';
 
 const KEYS = {
   ERROR_LOG: 'gre_studio_error_log_v1',
@@ -147,6 +148,7 @@ export function upsertQuestionNote(params: {
   const defaultTitle =
     params.title?.trim() ||
     `${params.testTitle} · ${params.question.section.toUpperCase()} Q${(params.question.questionIndex ?? 0) + 1}`;
+  const topicMeta = classifyQuestionTopic(params.question);
 
   if (idx >= 0) {
     notes[idx] = {
@@ -155,6 +157,8 @@ export function upsertQuestionNote(params: {
       content: params.content,
       tags: params.tags,
       question: params.question,
+      topicId: topicMeta.id,
+      topicName: topicMeta.name,
       updatedAt: now,
     };
   } else {
@@ -162,6 +166,8 @@ export function upsertQuestionNote(params: {
       id: `note-${params.question._id}`,
       questionId: params.question._id,
       question: params.question,
+      topicId: topicMeta.id,
+      topicName: topicMeta.name,
       monthId: params.monthId,
       monthLabel: params.monthLabel,
       testTitle: params.testTitle,
@@ -177,6 +183,49 @@ export function upsertQuestionNote(params: {
   return notes;
 }
 
+export function upsertTopicNote(params: {
+  id?: string;
+  topicId: string;
+  topicName: string;
+  title: string;
+  content: string;
+  tags: string[];
+}): StudyNote[] {
+  const notes = loadStudyNotes();
+  const now = new Date().toISOString();
+  if (!params.content.trim()) return notes;
+
+  if (params.id) {
+    const idx = notes.findIndex((n) => n.id === params.id);
+    if (idx >= 0) {
+      notes[idx] = {
+        ...notes[idx],
+        topicId: params.topicId,
+        topicName: params.topicName,
+        title: params.title.trim() || `${params.topicName} Revision Note`,
+        content: params.content,
+        tags: params.tags,
+        updatedAt: now,
+      };
+      saveStudyNotes(notes);
+      return notes;
+    }
+  }
+
+  notes.unshift({
+    id: `topic-note-${params.topicId}-${Date.now()}`,
+    topicId: params.topicId,
+    topicName: params.topicName,
+    title: params.title.trim() || `${params.topicName} Revision Note`,
+    content: params.content,
+    tags: params.tags,
+    createdAt: now,
+    updatedAt: now,
+  });
+  saveStudyNotes(notes);
+  return notes;
+}
+
 export function upsertStandaloneNote(params: {
   id?: string;
   title: string;
@@ -184,6 +233,8 @@ export function upsertStandaloneNote(params: {
   tags: string[];
   monthId?: string;
   monthLabel?: string;
+  topicId?: string;
+  topicName?: string;
 }): StudyNote[] {
   const notes = loadStudyNotes();
   const now = new Date().toISOString();
@@ -195,6 +246,8 @@ export function upsertStandaloneNote(params: {
         title: params.title,
         content: params.content,
         tags: params.tags,
+        topicId: params.topicId ?? notes[idx].topicId,
+        topicName: params.topicName ?? notes[idx].topicName,
         updatedAt: now,
       };
       saveStudyNotes(notes);
@@ -208,6 +261,8 @@ export function upsertStandaloneNote(params: {
     tags: params.tags,
     monthId: params.monthId,
     monthLabel: params.monthLabel,
+    topicId: params.topicId,
+    topicName: params.topicName,
     createdAt: now,
     updatedAt: now,
   });

@@ -32,6 +32,7 @@ import {
   upsertErrorLogEntry,
   upsertQuestionNote,
   upsertStandaloneNote,
+  upsertTopicNote,
 } from './utils/storage';
 import { LaunchTestModal } from './components/LaunchTestModal';
 import { TestSessionView } from './components/TestSessionView';
@@ -39,6 +40,7 @@ import { TestResultsView } from './components/TestResultsView';
 import { ErrorLogView } from './components/ErrorLogView';
 import { NotesHubView } from './components/NotesHubView';
 import { CustomDrillView } from './components/CustomDrillView';
+import { TopicBankView } from './components/TopicBankView';
 import { FileOpenAndGuideModal } from './components/FileOpenAndGuideModal';
 import {
   Play,
@@ -130,6 +132,7 @@ export default function App() {
                 monthLabel: m.label,
                 testId: t._id,
                 testTitle: t.title,
+                testDate: t.testDate,
                 questionIndex: qIdx,
               })),
             }));
@@ -395,6 +398,21 @@ export default function App() {
             type="button"
             onClick={() => {
               setInspectingAttempt(null);
+              setActiveTab('drill');
+            }}
+            className={`hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap shrink-0 pb-0.5 ${
+              activeTab === 'drill' && !inspectingAttempt
+                ? 'text-[#1E3A5F] dark:text-white underline underline-offset-8 decoration-2 decoration-[#1E3A5F] dark:decoration-blue-500 font-semibold'
+                : ''
+            }`}
+          >
+            Topic Bank
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setInspectingAttempt(null);
               setActiveTab('errors');
             }}
             className={`hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap shrink-0 pb-0.5 ${
@@ -419,21 +437,6 @@ export default function App() {
             }`}
           >
             Study Notes ({notes.length})
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              setInspectingAttempt(null);
-              setActiveTab('drill');
-            }}
-            className={`hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap shrink-0 pb-0.5 ${
-              activeTab === 'drill' && !inspectingAttempt
-                ? 'text-[#1E3A5F] dark:text-white underline underline-offset-8 decoration-2 decoration-[#1E3A5F] dark:decoration-blue-500 font-semibold'
-                : ''
-            }`}
-          >
-            Topic Drills
           </button>
 
           <button
@@ -563,13 +566,76 @@ export default function App() {
             })
           }
         />
-      ) : activeTab === 'drill' || activeTab === 'history' ? (
+      ) : activeTab === 'drill' ? (
+        <TopicBankView
+          allTestsByMonth={testsByMonth}
+          bookmarks={bookmarks}
+          errorLog={errorLog}
+          notes={notes}
+          attempts={attempts}
+          onStartSession={(cfg) => setActiveSession(cfg)}
+          onInspectAttempt={(att) => setInspectingAttempt(att)}
+          onSaveTopicNote={(params) => setNotes(upsertTopicNote(params))}
+          onSaveQuestionNote={(params) =>
+            setNotes(
+              upsertQuestionNote({
+                ...params,
+                monthId: params.monthId || params.question.monthId || 'topic-bank',
+                monthLabel: params.monthLabel || params.question.monthLabel || 'Topic Bank',
+                testTitle: params.testTitle || params.question.testTitle || 'Topic Question',
+              })
+            )
+          }
+          onDeleteNote={(id) => setNotes(deleteStudyNote(id))}
+          onUpdateErrorEntry={(params) => setErrorLog(upsertErrorLogEntry(params))}
+          onRemoveErrorEntry={(id) => setErrorLog(removeErrorLogEntry(id))}
+          onExportBackup={() => {
+            const json = exportFullBackupJson();
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `gre-studio-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+          onImportBackup={(raw) => {
+            const restored = importFullBackupJson(raw);
+            setErrorLog(restored.errorLog);
+            setNotes(restored.notes);
+            setAttempts(restored.attempts);
+            setBookmarks(restored.bookmarks);
+          }}
+          onImportCustomMonthFile={(mId, importedTests) => {
+            const mConfig = MONTH_CONFIGS.find((m) => m.id === mId);
+            const enriched = importedTests.map((t) => ({
+              ...t,
+              monthId: mId,
+              monthLabel: mConfig?.label || mId,
+              questions: (t.questions || []).map((q, qIdx) => ({
+                ...q,
+                monthId: mId,
+                monthLabel: mConfig?.label || mId,
+                testId: t._id,
+                testTitle: t.title,
+                testDate: t.testDate,
+                questionIndex: qIdx,
+              })),
+            }));
+            saveCustomTestsForMonth(mId, enriched);
+            setTestsByMonth((prev) => ({
+              ...prev,
+              [mId]: [...(prev[mId] || []), ...enriched],
+            }));
+          }}
+        />
+      ) : activeTab === 'history' ? (
         <CustomDrillView
           allTestsByMonth={testsByMonth}
           bookmarks={bookmarks}
           errorLog={errorLog}
           attempts={attempts}
-          activeSubTab={activeTab}
+          activeSubTab="history"
           onStartSession={(cfg) => setActiveSession(cfg)}
           onInspectAttempt={(att) => setInspectingAttempt(att)}
           onExportBackup={() => {

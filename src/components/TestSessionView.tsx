@@ -15,6 +15,7 @@ import {
   isNumericQuestion,
   NOTE_TAG_PRESETS,
 } from '../utils/greLogic';
+import { classifyQuestionTopic } from '../utils/topicClassifier';
 import { QuestionRenderer } from './QuestionRenderer';
 import { RichAnswerSummary } from './RichAnswerSummary';
 import { GreCalculatorModal } from './GreCalculatorModal';
@@ -222,8 +223,8 @@ export const TestSessionView: React.FC<TestSessionViewProps> = ({
   const isOverPaced = currentQuestionTimeMs >= 120000;
   const evaluation = evaluateQuestionAnswer(currentQuestion, currentAns);
 
-  // Distinct sections in this test for quick navigation
-  const sectionGroups = useMemo(() => {
+  // Distinct contiguous sections in this test (only treat as multi-section ETS exam if sections aren't interleaved)
+  const { sectionGroups, isContiguousMultiSection } = useMemo(() => {
     const groups: { section: string; firstIndex: number; count: number }[] = [];
     questions.forEach((q, idx) => {
       const last = groups[groups.length - 1];
@@ -233,17 +234,23 @@ export const TestSessionView: React.FC<TestSessionViewProps> = ({
         last.count++;
       }
     });
-    return groups;
+    const uniqueSections = new Set(groups.map((g) => g.section));
+    // True multi-section mock test: >1 section and each section appears once (not interleaved from a topic drill)
+    const contiguous = groups.length > 1 && groups.length === uniqueSections.size;
+    return { sectionGroups: groups, isContiguousMultiSection: contiguous };
   }, [questions]);
 
   // Active section range for compact inline question strip
   const activeSectionGroup = useMemo(() => {
+    if (!isContiguousMultiSection) {
+      return { section: currentQuestion.section, firstIndex: 0, count: questions.length };
+    }
     return (
       sectionGroups.find(
         (sg) => currentIndex >= sg.firstIndex && currentIndex < sg.firstIndex + sg.count
       ) || { section: currentQuestion.section, firstIndex: 0, count: questions.length }
     );
-  }, [sectionGroups, currentIndex, currentQuestion.section, questions.length]);
+  }, [isContiguousMultiSection, sectionGroups, currentIndex, currentQuestion.section, questions.length]);
 
   const handleUpdateAnswer = (next: UserAnswer) => {
     setAnswers((prev) => ({
@@ -340,6 +347,10 @@ export const TestSessionView: React.FC<TestSessionViewProps> = ({
                 </span>
                 <span aria-hidden="true">·</span>
                 <span className="truncate">{classifyQuestionSubType(currentQuestion)}</span>
+                <span aria-hidden="true" className="hidden md:inline">·</span>
+                <span className="hidden md:inline text-sky-200 truncate">
+                  {classifyQuestionTopic(currentQuestion).name}
+                </span>
                 <span aria-hidden="true" className="hidden sm:inline">·</span>
                 <span className="hidden sm:inline whitespace-nowrap">
                   Diff {currentQuestion.difficulty || 3}/5
@@ -496,13 +507,14 @@ export const TestSessionView: React.FC<TestSessionViewProps> = ({
           </div>
         </div>
 
-        {/* Section Quick-Jump Bar if multiple sections exist */}
-        {sectionGroups.length > 1 && (
+        {/* Section Quick-Jump Bar only for contiguous multi-section Mock Tests */}
+        {isContiguousMultiSection && (
           <div className="max-w-[1380px] mx-auto pt-1.5 mt-1.5 border-t border-white/10 flex items-center justify-between gap-4 overflow-x-auto">
             <div className="flex items-center gap-1.5">
               <span className="text-[11px] text-slate-400 mr-1 shrink-0">Sections:</span>
               {sectionGroups.map((sg, idx) => {
-                const isCurrentSection = currentQuestion.section === sg.section;
+                const isCurrentSection =
+                  currentIndex >= sg.firstIndex && currentIndex < sg.firstIndex + sg.count;
                 return (
                   <button
                     key={`${sg.section}-${idx}`}

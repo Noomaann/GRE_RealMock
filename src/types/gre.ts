@@ -60,6 +60,7 @@ export interface GREQuestion {
   monthLabel?: string;
   testId?: string;
   testTitle?: string;
+  testDate?: string;
   questionIndex?: number;
 }
 
@@ -130,8 +131,10 @@ export interface ErrorLogEntry {
 
 export interface StudyNote {
   id: string;
-  questionId?: string; // Optional: linked to a specific question, or standalone note
+  questionId?: string; // Optional: linked to a specific question, or standalone/topic note
   question?: GREQuestion;
+  topicId?: string; // Linked Quant/Verbal syllabus topic ID
+  topicName?: string; // Human-readable topic name for revision grouping
   monthId?: string;
   monthLabel?: string;
   testTitle?: string;
